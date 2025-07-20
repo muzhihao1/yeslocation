@@ -2,6 +2,11 @@
 
 基于Context Engineering理念开发的智能企业官网，实现了多层次上下文感知和动态内容适配。
 
+[![Deploy Status](https://img.shields.io/badge/deploy-success-brightgreen)](https://github.com/muzhihao1/yeslocation)
+[![React Version](https://img.shields.io/badge/react-19.1.0-blue)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/typescript-4.9.5-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/tailwind-3.4.17-38B2AC)](https://tailwindcss.com/)
+
 ## 技术架构
 
 ### Context Engineering层级

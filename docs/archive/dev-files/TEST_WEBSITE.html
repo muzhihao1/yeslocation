@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站测试页面</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2196F3;
+            margin-bottom: 20px;
+        }
+        .status-card {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #f44336;
+        }
+        .info {
+            color: #2196F3;
+        }
+        .test-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #FFB300;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px 10px 10px 0;
+        }
+        .test-link:hover {
+            background: #FF8F00;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>耶氏体育网站测试页面</h1>
+    
+    <div class="status-card">
+        <h2>✅ 服务器状态</h2>
+        <p class="success">开发服务器正在运行：http://localhost:3000</p>
+    </div>
+    
+    <div class="status-card">
+        <h2>🎨 实施的改进</h2>
+        <ul>
+            <li class="success">✅ 颜色系统：从绿色转换为蓝黄色系</li>
+            <li class="success">✅ 字体系统：Montserrat + Noto Sans SC</li>
+            <li class="success">✅ Service Worker：仅在生产环境启用</li>
+            <li class="success">✅ 代码分割：所有页面使用React.lazy</li>
+            <li class="success">✅ 响应式图片：支持WebP/AVIF格式</li>
+            <li class="success">✅ 图片懒加载：使用Intersection Observer</li>
+        </ul>
+    </div>
+    
+    <div class="status-card">
+        <h2>⚠️ 已修复的问题</h2>
+        <ul>
+            <li class="info">• Service Worker在开发环境下的冲突</li>
+            <li class="info">• 图片优化函数导入错误</li>
+            <li class="info">• TypeScript类型错误</li>
+        </ul>
+    </div>
+    
+    <div class="status-card">
+        <h2>🔗 网站链接</h2>
+        <p>请在新标签页中打开以下链接来查看网站效果：</p>
+        <a href="http://localhost:3000" target="_blank" class="test-link">打开首页</a>
+        <a href="http://localhost:3000/products" target="_blank" class="test-link">产品页面</a>
+        <a href="http://localhost:3000/training" target="_blank" class="test-link">培训页面</a>
+        <a href="http://localhost:3000/stores" target="_blank" class="test-link">门店页面</a>
+        <a href="http://localhost:3000/about" target="_blank" class="test-link">关于我们</a>
+    </div>
+    
+    <div class="status-card">
+        <h2>📊 对比原计划</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ddd;">项目</th>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ddd;">计划</th>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ddd;">实际</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">主色调</td>
+                <td style="padding: 10px;">蓝色 #2196F3</td>
+                <td style="padding: 10px;" class="success">✅ 已实施</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">辅助色</td>
+                <td style="padding: 10px;">黄色 #FFB300</td>
+                <td style="padding: 10px;" class="success">✅ 已实施</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">导航简化</td>
+                <td style="padding: 10px;">6个主要项目</td>
+                <td style="padding: 10px;" class="success">✅ 已实施</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">代码分割</td>
+                <td style="padding: 10px;">懒加载</td>
+                <td style="padding: 10px;" class="success">✅ 已实施</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">PWA功能</td>
+                <td style="padding: 10px;">离线支持</td>
+                <td style="padding: 10px;" class="success">✅ 生产环境可用</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="status-card">
+        <h2>🖼️ 网站预览</h2>
+        <p>如果下方iframe无法加载，请直接点击上方链接在新标签页中查看。</p>
+        <iframe src="http://localhost:3000" title="网站预览"></iframe>
+    </div>
+    
+    <script>
+        // 检查服务器状态
+        fetch('http://localhost:3000')
+            .then(response => {
+                if (response.ok) {
+                    console.log('✅ 服务器正常运行');
+                } else {
+                    console.error('❌ 服务器响应异常');
+                }
+            })
+            .catch(error => {
+                console.error('❌ 无法连接到服务器:', error);
+                alert('请确保开发服务器正在运行（npm start）');
+            });
+    </script>
+</body>
+</html>
