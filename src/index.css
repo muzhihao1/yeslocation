@@ -1,13 +1,362 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 基础样式重置和改进 */
+@layer base {
+  :root {
+    /* 主色调 - 蓝色系 */
+    --color-primary-dark: #1565C0;
+    --color-primary-main: #2196F3;
+    --color-primary-light: #64B5F6;
+    --color-primary-pale: #E3F2FD;
+    
+    /* 辅助色 - 黄色系 */
+    --color-secondary-main: #FFB300;
+    --color-secondary-light: #FFD54F;
+    --color-secondary-dark: #FF8F00;
+    --color-secondary-pale: #FFF8E1;
+    
+    /* 中性色 */
+    --color-neutral-900: #212121;
+    --color-neutral-700: #424242;
+    --color-neutral-500: #757575;
+    --color-neutral-300: #E0E0E0;
+    --color-neutral-100: #F5F5F5;
+    --color-neutral-50: #FAFAFA;
+    
+    /* 功能色 */
+    --color-success: #4CAF50;
+    --color-warning: #FFA726;
+    --color-error: #F44336;
+    --color-info: #29B6F6;
+    
+    /* 旧变量兼容（映射到新颜色） */
+    --color-primary: #2196F3;
+    --color-secondary: #FFB300;
+    --header-height: 4rem;
+    
+    /* 字体系统 */
+    --font-display: 'Montserrat', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-body: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    
+    /* 字体大小 */
+    --text-display: 4.5rem;    /* 72px */
+    --text-h1: 3rem;           /* 48px */
+    --text-h2: 2.25rem;        /* 36px */
+    --text-h3: 1.875rem;       /* 30px */
+    --text-h4: 1.5rem;         /* 24px */
+    --text-body-lg: 1.125rem;  /* 18px */
+    --text-body: 1rem;         /* 16px */
+    --text-body-sm: 0.875rem;  /* 14px */
+    --text-caption: 0.75rem;   /* 12px */
+    
+    /* 行高 */
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.6;
+    --leading-loose: 1.8;
+    
+    /* 字间距 */
+    --tracking-tight: -0.02em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.02em;
+    
+    /* 间距系统 (8px基础单位) */
+    --space-xs: 0.5rem;   /* 8px */
+    --space-sm: 1rem;     /* 16px */
+    --space-md: 1.5rem;   /* 24px */
+    --space-lg: 2rem;     /* 32px */
+    --space-xl: 3rem;     /* 48px */
+    --space-xxl: 4rem;    /* 64px */
+    --space-xxxl: 5rem;   /* 80px */
+    --space-huge: 7.5rem; /* 120px */
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply text-neutral-800 bg-neutral-50 antialiased;
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv02' on;
+  }
+
+  ::selection {
+    @apply bg-primary-500 text-white;
+  }
+
+  /* 改进的滚动条样式 */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-400;
+  }
+
+  /* 标题样式 */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--color-neutral-900);
+  }
+
+  h1 { 
+    font-size: var(--text-h1);
+    @apply md:text-6xl lg:text-7xl;
+  }
+  h2 { 
+    font-size: var(--text-h2);
+    @apply md:text-5xl;
+    color: var(--color-primary-dark);
+  }
+  h3 { 
+    font-size: var(--text-h3);
+    @apply md:text-4xl;
+    color: var(--color-primary-dark);
+  }
+  h4 { 
+    font-size: var(--text-h4);
+    @apply md:text-3xl;
+  }
+  h5 { 
+    font-size: var(--text-body-lg);
+    @apply md:text-2xl;
+  }
+  h6 { 
+    font-size: var(--text-body);
+    @apply md:text-xl;
+  }
+
+  /* 段落样式 */
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* 链接默认样式 */
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  /* 焦点样式 */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
+}
+
+/* 组件样式 */
+@layer components {
+  /* 容器样式 */
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* 玻璃态效果 */
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+  }
+
+  /* 渐变背景 */
+  .gradient-primary {
+    @apply bg-gradient-to-br from-primary-400 to-primary-600;
+  }
+
+  .gradient-secondary {
+    @apply bg-gradient-to-br from-secondary-400 to-secondary-600;
+  }
+
+  /* 文字渐变 */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent;
+  }
+
+  /* 卡片悬停效果 */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1;
+  }
+
+  /* 按钮基础样式 */
+  .btn {
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg;
+  }
+
+  /* 输入框基础样式 */
+  .input {
+    @apply w-full px-4 py-2 border border-neutral-300 rounded-lg transition-colors duration-200;
+    @apply focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20;
+  }
+
+  /* 分割线 */
+  .divider {
+    @apply border-t border-neutral-200;
+  }
+
+  /* 徽章 */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* 加载动画 */
+  .loading-dots {
+    @apply inline-flex space-x-1;
+  }
+
+  .loading-dots span {
+    @apply w-1.5 h-1.5 bg-primary-500 rounded-full animate-pulse;
+  }
+
+  /* 页面转场动画 */
+  .page-enter {
+    @apply animate-fade-in;
+  }
+
+  /* 网格背景 */
+  .grid-background {
+    background-image: 
+      linear-gradient(rgba(33, 150, 243, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33, 150, 243, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+}
+
+/* 工具类 */
+@layer utilities {
+  /* 文字截断 */
+  .line-clamp-1 { @apply overflow-hidden text-ellipsis whitespace-nowrap; }
+  .line-clamp-2 { 
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    @apply overflow-hidden;
+  }
+  .line-clamp-3 { 
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    @apply overflow-hidden;
+  }
+
+  /* 安全区域适配 */
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-left { padding-left: env(safe-area-inset-left); }
+  .safe-right { padding-right: env(safe-area-inset-right); }
+
+  /* 动画延迟 */
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+}
+
+/* Shimmer动画 */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* 自定义CSS变量 - Context Engineering风格 */
+:root {
+  --context-depth: 0;
+  --user-engagement: 0;
+  --content-priority: 1;
+}
+
+/* Context-aware动画 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes contextPulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+/* 全局样式 */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Context-aware组件基础样式 */
+.context-aware {
+  transition: all 0.3s ease-in-out;
+}
+
+.context-priority-high {
+  animation: contextPulse 2s ease-in-out infinite;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

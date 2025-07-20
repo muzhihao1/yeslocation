@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_3eedb154dfadbd3cc3ab9d4b8d20a14a {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div id="legend" style="position: fixed; 
+     bottom: 80px; left: 10px; width: 160px; height: auto; max-height: 250px;
+     background-color: rgba(255, 255, 255, 0.95); 
+     border: 2px solid #2C3E50; 
+     border-radius: 10px;
+     z-index: 9999; 
+     font-size: 12px; 
+     padding: 10px;
+     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+     font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+     overflow-y: auto;">
+<h4 style="margin: 0 0 8px 0; color: #2C3E50; text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 13px;">
+    门店分布
+</h4>
+
+    <div style="margin: 4px 0; display: flex; align-items: center;">
+        <div style="width: 14px; height: 14px; background-color: #E74C3C; border-radius: 50%; margin-right: 6px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;"></div>
+        <span style="font-size: 11px; line-height: 1.2;">呈贡区<br>(6家)</span>
+    </div>
+    
+    <div style="margin: 4px 0; display: flex; align-items: center;">
+        <div style="width: 14px; height: 14px; background-color: #2ECC71; border-radius: 50%; margin-right: 6px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;"></div>
+        <span style="font-size: 11px; line-height: 1.2;">五华区<br>(6家)</span>
+    </div>
+    
+    <div style="margin: 4px 0; display: flex; align-items: center;">
+        <div style="width: 14px; height: 14px; background-color: #3498DB; border-radius: 50%; margin-right: 6px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;"></div>
+        <span style="font-size: 11px; line-height: 1.2;">官渡区<br>(2家)</span>
+    </div>
+    
+    <div style="margin: 4px 0; display: flex; align-items: center;">
+        <div style="width: 14px; height: 14px; background-color: #9B59B6; border-radius: 50%; margin-right: 6px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;"></div>
+        <span style="font-size: 11px; line-height: 1.2;">盘龙区<br>(2家)</span>
+    </div>
+    
+    <div style="margin: 4px 0; display: flex; align-items: center;">
+        <div style="width: 14px; height: 14px; background-color: #F39C12; border-radius: 50%; margin-right: 6px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;"></div>
+        <span style="font-size: 11px; line-height: 1.2;">晋宁区<br>(3家)</span>
+    </div>
+    
+    <div style="margin: 4px 0; display: flex; align-items: center;">
+        <div style="width: 14px; height: 14px; background-color: #8E44AD; border-radius: 50%; margin-right: 6px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;"></div>
+        <span style="font-size: 11px; line-height: 1.2;">澄江市<br>(1家)</span>
+    </div>
+    
+<div style="margin-top: 8px; padding-top: 6px; border-top: 1px solid #ddd; text-align: center;">
+    <strong style="color: #E74C3C; font-size: 12px;">总计: 20家</strong>
+</div>
+</div>
+
+<!-- 移动端适配样式 -->
+<style>
+@media (max-width: 768px) {
+    #legend {
+        bottom: 60px !important;
+        left: 5px !important;
+        width: 140px !important;
+        font-size: 11px !important;
+        padding: 8px !important;
+    }
+    #legend h4 {
+        font-size: 12px !important;
+    }
+    #legend span {
+        font-size: 10px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #legend {
+        bottom: 50px !important;
+        left: 3px !important;
+        width: 120px !important;
+        font-size: 10px !important;
+        padding: 6px !important;
+    }
+    #legend h4 {
+        font-size: 11px !important;
+    }
+    #legend span {
+        font-size: 9px !important;
+    }
+}
+</style>
+    
+<div id="title" style="position: fixed; 
+     top: 10px; left: 50%; transform: translateX(-50%); 
+     width: 90%; max-width: 400px; height: auto; 
+     background: linear-gradient(135deg, #2C3E50 0%, #34495E 50%, #2C3E50 100%); 
+     border: 3px solid #E74C3C; 
+     border-radius: 15px;
+     z-index: 9999; 
+     text-align: center; 
+     padding: 12px;
+     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+     font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">
+<h2 style="margin: 0; color: #ECF0F1; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 18px; font-weight: bold;">
+    耶氏台球门店分布
+</h2>
+<p style="margin: 5px 0 0 0; color: #F39C12; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+    耶氏台球，台球 YES
+</p>
+</div>
+    
+<div id="footer" style="position: fixed; 
+     bottom: 10px; right: 10px; 
+     width: 220px; height: auto; 
+     background: linear-gradient(135deg, rgba(44, 62, 80, 0.9), rgba(52, 73, 94, 0.9)); 
+     border: 1px solid #E74C3C; 
+     border-radius: 8px;
+     z-index: 9999; 
+     padding: 8px;
+     font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+     font-size: 11px;
+     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+     color: #ECF0F1;">
+</div>
+    
+<style>
+/* 移动端全局优化 */
+.leaflet-control-zoom {
+    font-size: 18px !important;
+}
+
+.leaflet-control-layers {
+    font-size: 12px !important;
+}
+
+.leaflet-popup-content {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+}
+
+.leaflet-tooltip {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+}
+
+/* 确保在所有设备上字体清晰 */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+</style>
+    
+            <div class="folium-map" id="map_3eedb154dfadbd3cc3ab9d4b8d20a14a" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_3eedb154dfadbd3cc3ab9d4b8d20a14a = L.map(
+                "map_3eedb154dfadbd3cc3ab9d4b8d20a14a",
+                {
+                    center: [25.0389, 102.7014],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e158eaf824c1f1c7a5414a438a5f874e = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_e158eaf824c1f1c7a5414a438a5f874e.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var tile_layer_0e1348703719884dd71c5b0adf248bb0 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "\u5730\u56fe\u6570\u636e \u00a9 OpenStreetMap \u8d21\u732e\u8005",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_0e1348703719884dd71c5b0adf248bb0.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var tile_layer_2e86cb26c7e9f775d99f67f5cfd8889b = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_2e86cb26c7e9f775d99f67f5cfd8889b.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var feature_group_330ab2f496c239aa6fbf1f69bd56e5c8 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_51fdbb3b23c1376f99d7e64df2538deb = L.marker(
+                [24.893498, 102.805662],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var icon_70973646cbe4738d436f7218e87ed89c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#E74C3C",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_45e113088b661a635e1c9b9d613d6086 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_5d72156ec64edba32955f66a63c5e95f = $(`<div id="html_5d72156ec64edba32955f66a63c5e95f" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #E74C3C; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏呈贡广场加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 呈贡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市呈贡区古银路华联超市对面2楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 67454440/67451141</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 1</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.893498, 102.805662</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_45e113088b661a635e1c9b9d613d6086.setContent(html_5d72156ec64edba32955f66a63c5e95f);
+            
+        
+
+        marker_51fdbb3b23c1376f99d7e64df2538deb.bindPopup(popup_45e113088b661a635e1c9b9d613d6086)
+        ;
+
+        
+    
+    
+            marker_51fdbb3b23c1376f99d7e64df2538deb.bindTooltip(
+                `<div>
+                     呈贡广场 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_51fdbb3b23c1376f99d7e64df2538deb.setIcon(icon_70973646cbe4738d436f7218e87ed89c);
+            
+    
+            var marker_3156b3c3d2966d90eafbb797543437e1 = L.marker(
+                [24.893498, 102.805662],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var div_icon_cf5e1d2fd9b5c681c3b23866eec9f2c7 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #E74C3C, #E74C3Cdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u5448\u8d21\u5e7f\u573a\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_3156b3c3d2966d90eafbb797543437e1.setIcon(div_icon_cf5e1d2fd9b5c681c3b23866eec9f2c7);
+            
+    
+            var marker_edcf06c29b2c4c38cf6c65184dd2e02b = L.marker(
+                [24.897858, 102.852294],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var icon_9bb8378708e64afbd2d56ada93ff097b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#E74C3C",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_96e18a5530a49ee7c9bb3a2c48958879 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_c327d0abfc1c3a4f4184527cef4ece6f = $(`<div id="html_c327d0abfc1c3a4f4184527cef4ece6f" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #E74C3C; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏新都会加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 呈贡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市呈贡区春融街昆百大新都会-1楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 67466746</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 2</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.897858, 102.852294</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_96e18a5530a49ee7c9bb3a2c48958879.setContent(html_c327d0abfc1c3a4f4184527cef4ece6f);
+            
+        
+
+        marker_edcf06c29b2c4c38cf6c65184dd2e02b.bindPopup(popup_96e18a5530a49ee7c9bb3a2c48958879)
+        ;
+
+        
+    
+    
+            marker_edcf06c29b2c4c38cf6c65184dd2e02b.bindTooltip(
+                `<div>
+                     新都会 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_edcf06c29b2c4c38cf6c65184dd2e02b.setIcon(icon_9bb8378708e64afbd2d56ada93ff097b);
+            
+    
+            var marker_7618ac0382d2dede4ee42e2250a38b0f = L.marker(
+                [24.897858, 102.852294],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var div_icon_25c74c8bdd916e69068f7a927cc44744 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #E74C3C, #E74C3Cdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u65b0\u90fd\u4f1a\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_7618ac0382d2dede4ee42e2250a38b0f.setIcon(div_icon_25c74c8bdd916e69068f7a927cc44744);
+            
+    
+            var marker_75e7c8dab0ad5e41d98d8f72c9ea36d0 = L.marker(
+                [24.862403, 102.857425],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var icon_0f092d2f3d15ee2a88ea9619a2004ee4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#E74C3C",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d29db4c7aa6d2933bc4cc2a58f9ea8d7 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_7652494294af248c1aea6074a691b44e = $(`<div id="html_7652494294af248c1aea6074a691b44e" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #E74C3C; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏佳美加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 呈贡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市呈贡区紫薇街佳美商业广场2楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 64197147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 3</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.862403, 102.857425</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_d29db4c7aa6d2933bc4cc2a58f9ea8d7.setContent(html_7652494294af248c1aea6074a691b44e);
+            
+        
+
+        marker_75e7c8dab0ad5e41d98d8f72c9ea36d0.bindPopup(popup_d29db4c7aa6d2933bc4cc2a58f9ea8d7)
+        ;
+
+        
+    
+    
+            marker_75e7c8dab0ad5e41d98d8f72c9ea36d0.bindTooltip(
+                `<div>
+                     佳美 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_75e7c8dab0ad5e41d98d8f72c9ea36d0.setIcon(icon_0f092d2f3d15ee2a88ea9619a2004ee4);
+            
+    
+            var marker_3a3c30b3bf2df4297cd87ca38e13ee9d = L.marker(
+                [24.862403, 102.857425],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var div_icon_8d8d53fd49ff5a5fceec660ec40416a5 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #E74C3C, #E74C3Cdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u4f73\u7f8e\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_3a3c30b3bf2df4297cd87ca38e13ee9d.setIcon(div_icon_8d8d53fd49ff5a5fceec660ec40416a5);
+            
+    
+            var marker_a98f9a7bef8f285f20997038d09a34ca = L.marker(
+                [24.884291, 102.831085],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var icon_a2a2bc3b9fc3e80f83fc736044031355 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#E74C3C",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f84bbed555bd836a66ec6fef87472e63 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_108dbef8deb8326d670e48fe3439b69e = $(`<div id="html_108dbef8deb8326d670e48fe3439b69e" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #E74C3C; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏七彩云南加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 呈贡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市呈贡区上蒜云南第一城-1楼华联超市旁</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 65939351</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 4</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.884291, 102.831085</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_f84bbed555bd836a66ec6fef87472e63.setContent(html_108dbef8deb8326d670e48fe3439b69e);
+            
+        
+
+        marker_a98f9a7bef8f285f20997038d09a34ca.bindPopup(popup_f84bbed555bd836a66ec6fef87472e63)
+        ;
+
+        
+    
+    
+            marker_a98f9a7bef8f285f20997038d09a34ca.bindTooltip(
+                `<div>
+                     七彩云南 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a98f9a7bef8f285f20997038d09a34ca.setIcon(icon_a2a2bc3b9fc3e80f83fc736044031355);
+            
+    
+            var marker_a068cfb2e31daf4b3dd55c15994ca889 = L.marker(
+                [24.884291, 102.831085],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var div_icon_68120ca18ad9c0c8e5b5cfeeff826185 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #E74C3C, #E74C3Cdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u4e03\u5f69\u4e91\u5357\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_a068cfb2e31daf4b3dd55c15994ca889.setIcon(div_icon_68120ca18ad9c0c8e5b5cfeeff826185);
+            
+    
+            var marker_21dd0d31c017d5bab9db4debf0a8d309 = L.marker(
+                [24.842547, 102.849772],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var icon_972a5008cef8fb278d0a0148087b61a5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#E74C3C",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_81427ee7b9f96ca437baea27df8911b1 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_fd2438e34145c238a5512266c160691e = $(`<div id="html_fd2438e34145c238a5512266c160691e" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #E74C3C; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏雨花广场加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 呈贡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市呈贡区雨花商业广场1楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 400089147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 5</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.842547, 102.849772</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_81427ee7b9f96ca437baea27df8911b1.setContent(html_fd2438e34145c238a5512266c160691e);
+            
+        
+
+        marker_21dd0d31c017d5bab9db4debf0a8d309.bindPopup(popup_81427ee7b9f96ca437baea27df8911b1)
+        ;
+
+        
+    
+    
+            marker_21dd0d31c017d5bab9db4debf0a8d309.bindTooltip(
+                `<div>
+                     雨花广场 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_21dd0d31c017d5bab9db4debf0a8d309.setIcon(icon_972a5008cef8fb278d0a0148087b61a5);
+            
+    
+            var marker_49bf6b5aaaca8286e22c31b201332f8b = L.marker(
+                [24.842547, 102.849772],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var div_icon_79b774019daff5fd7b50ae8f6653b703 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #E74C3C, #E74C3Cdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u96e8\u82b1\u5e7f\u573a\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_49bf6b5aaaca8286e22c31b201332f8b.setIcon(div_icon_79b774019daff5fd7b50ae8f6653b703);
+            
+    
+            var marker_d91d0a75046985c71a85471420fc0275 = L.marker(
+                [24.915558, 102.799904],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var icon_aeee722623a424ba9fcd3acd597d5425 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#E74C3C",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_eb9c352dda8b7eadc23031f6c241ce02 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_1d113a97ac137fc33b5510df9382a08c = $(`<div id="html_1d113a97ac137fc33b5510df9382a08c" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #E74C3C; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏斗南销售中心         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 呈贡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市呈贡区斗南街道彩龙街世纪城超市旁</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 67890147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 6</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.915558, 102.799904</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_eb9c352dda8b7eadc23031f6c241ce02.setContent(html_1d113a97ac137fc33b5510df9382a08c);
+            
+        
+
+        marker_d91d0a75046985c71a85471420fc0275.bindPopup(popup_eb9c352dda8b7eadc23031f6c241ce02)
+        ;
+
+        
+    
+    
+            marker_d91d0a75046985c71a85471420fc0275.bindTooltip(
+                `<div>
+                     销售中心 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d91d0a75046985c71a85471420fc0275.setIcon(icon_aeee722623a424ba9fcd3acd597d5425);
+            
+    
+            var marker_238ee46ac89367906ad638f3697b29e9 = L.marker(
+                [24.915558, 102.799904],
+                {
+}
+            ).addTo(feature_group_330ab2f496c239aa6fbf1f69bd56e5c8);
+        
+    
+            var div_icon_59ff1df4e24b64ef5741261622b977b3 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #E74C3C, #E74C3Cdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u9500\u552e\u4e2d\u5fc3\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_238ee46ac89367906ad638f3697b29e9.setIcon(div_icon_59ff1df4e24b64ef5741261622b977b3);
+            
+    
+            feature_group_330ab2f496c239aa6fbf1f69bd56e5c8.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var feature_group_cd8a94baaa9f34288b553c4898b51339 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_e19b08dbb0cbd110ee181bc43e7c4816 = L.marker(
+                [25.026688, 102.690832],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var icon_d72e0013491339c5024a8dbdd746a06a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#2ECC71",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_aba31fa687d778907de72f9ce0d88e05 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_abc2db7a65f1b1e5b3ddd4ba284105df = $(`<div id="html_abc2db7a65f1b1e5b3ddd4ba284105df" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #2ECC71; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏船房加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 五华区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市五华区船房路船房客运站对面</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 65411147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 7</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.026688, 102.690832</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_aba31fa687d778907de72f9ce0d88e05.setContent(html_abc2db7a65f1b1e5b3ddd4ba284105df);
+            
+        
+
+        marker_e19b08dbb0cbd110ee181bc43e7c4816.bindPopup(popup_aba31fa687d778907de72f9ce0d88e05)
+        ;
+
+        
+    
+    
+            marker_e19b08dbb0cbd110ee181bc43e7c4816.bindTooltip(
+                `<div>
+                     船房 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e19b08dbb0cbd110ee181bc43e7c4816.setIcon(icon_d72e0013491339c5024a8dbdd746a06a);
+            
+    
+            var marker_946b7755fd7f0a8002f9438061dc6470 = L.marker(
+                [25.026688, 102.690832],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var div_icon_de79c4e4f99078dbd41fc0c676a692c6 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #2ECC71, #2ECC71dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u8239\u623f\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_946b7755fd7f0a8002f9438061dc6470.setIcon(div_icon_de79c4e4f99078dbd41fc0c676a692c6);
+            
+    
+            var marker_882b5cdfdb3d03e5e0e9290e880960a1 = L.marker(
+                [25.026696, 102.691004],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var icon_67232732f6afc83682f6158e1c2ea379 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#2ECC71",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c41a90a78e7e10f15f46647444df7dc8 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_eee214dc8590cac43624a1d4a3c03eb9 = $(`<div id="html_eee214dc8590cac43624a1d4a3c03eb9" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #2ECC71; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏船房加盟二店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 五华区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市五华区船房路船房客运站对面</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 待补充</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 8</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.026696, 102.691004</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_c41a90a78e7e10f15f46647444df7dc8.setContent(html_eee214dc8590cac43624a1d4a3c03eb9);
+            
+        
+
+        marker_882b5cdfdb3d03e5e0e9290e880960a1.bindPopup(popup_c41a90a78e7e10f15f46647444df7dc8)
+        ;
+
+        
+    
+    
+            marker_882b5cdfdb3d03e5e0e9290e880960a1.bindTooltip(
+                `<div>
+                     船房二店 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_882b5cdfdb3d03e5e0e9290e880960a1.setIcon(icon_67232732f6afc83682f6158e1c2ea379);
+            
+    
+            var marker_d5aed7f2726a7b79168ce574e0911752 = L.marker(
+                [25.026696, 102.691004],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var div_icon_3bf52aac7a6a2b05d1e0d970b3deea7c = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #2ECC71, #2ECC71dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u8239\u623f\u4e8c\u5e97\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_d5aed7f2726a7b79168ce574e0911752.setIcon(div_icon_3bf52aac7a6a2b05d1e0d970b3deea7c);
+            
+    
+            var marker_ea08fd5084eb5e46deeb3dad685fc0fa = L.marker(
+                [25.079094, 102.663835],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var icon_9a905290d841c3e9e6e96b8dae42b1f0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#2ECC71",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_746a9cc98c6007ad4b73128740db8b46 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_4af20ceb9f1d5325a298b9085beebfbb = $(`<div id="html_4af20ceb9f1d5325a298b9085beebfbb" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #2ECC71; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏海源加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 五华区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市五华区海源北路999号星光天地负一楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 待补充</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 9</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.079094, 102.663835</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_746a9cc98c6007ad4b73128740db8b46.setContent(html_4af20ceb9f1d5325a298b9085beebfbb);
+            
+        
+
+        marker_ea08fd5084eb5e46deeb3dad685fc0fa.bindPopup(popup_746a9cc98c6007ad4b73128740db8b46)
+        ;
+
+        
+    
+    
+            marker_ea08fd5084eb5e46deeb3dad685fc0fa.bindTooltip(
+                `<div>
+                     海源 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ea08fd5084eb5e46deeb3dad685fc0fa.setIcon(icon_9a905290d841c3e9e6e96b8dae42b1f0);
+            
+    
+            var marker_e74129603cec159580e42123c45c8472 = L.marker(
+                [25.079094, 102.663835],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var div_icon_de44c22241957f701591af3181fe79f0 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #2ECC71, #2ECC71dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u6d77\u6e90\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_e74129603cec159580e42123c45c8472.setIcon(div_icon_de44c22241957f701591af3181fe79f0);
+            
+    
+            var marker_06f6ebd29e7b0cb405022e5deebc5b23 = L.marker(
+                [25.085147, 102.654075],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var icon_b918ade5ee15a4d4d59a5b2cae1d349a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#2ECC71",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a7296136e6590d840091cf29be5c8ee1 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_b6d9f6026a52299cd1af77c338ac6ee0 = $(`<div id="html_b6d9f6026a52299cd1af77c338ac6ee0" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #2ECC71; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏国际派加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 五华区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市五华区商院路昆百大国际派3楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 63114147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 10</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.085147, 102.654075</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_a7296136e6590d840091cf29be5c8ee1.setContent(html_b6d9f6026a52299cd1af77c338ac6ee0);
+            
+        
+
+        marker_06f6ebd29e7b0cb405022e5deebc5b23.bindPopup(popup_a7296136e6590d840091cf29be5c8ee1)
+        ;
+
+        
+    
+    
+            marker_06f6ebd29e7b0cb405022e5deebc5b23.bindTooltip(
+                `<div>
+                     国际派 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_06f6ebd29e7b0cb405022e5deebc5b23.setIcon(icon_b918ade5ee15a4d4d59a5b2cae1d349a);
+            
+    
+            var marker_1346f638493be790dcfad0c3e4035448 = L.marker(
+                [25.085147, 102.654075],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var div_icon_ce58fc82be84931b4e2e1e6be2875fa6 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #2ECC71, #2ECC71dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u56fd\u9645\u6d3e\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_1346f638493be790dcfad0c3e4035448.setIcon(div_icon_ce58fc82be84931b4e2e1e6be2875fa6);
+            
+    
+            var marker_68a50fc960cc14dd02e37b67d399101d = L.marker(
+                [25.085048, 102.654396],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var icon_680eac15891161419ac3422fe22ea4e5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#2ECC71",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_aed6e4cd07d5a9b1cefab887e33d4bef = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_4f4d641356125cfa7dfc99a815031d53 = $(`<div id="html_4f4d641356125cfa7dfc99a815031d53" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #2ECC71; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏国际派2.0加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 五华区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市五华区商院路昆百大国际派3楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 68810588</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 11</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.085048, 102.654396</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_aed6e4cd07d5a9b1cefab887e33d4bef.setContent(html_4f4d641356125cfa7dfc99a815031d53);
+            
+        
+
+        marker_68a50fc960cc14dd02e37b67d399101d.bindPopup(popup_aed6e4cd07d5a9b1cefab887e33d4bef)
+        ;
+
+        
+    
+    
+            marker_68a50fc960cc14dd02e37b67d399101d.bindTooltip(
+                `<div>
+                     国际派2.0 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_68a50fc960cc14dd02e37b67d399101d.setIcon(icon_680eac15891161419ac3422fe22ea4e5);
+            
+    
+            var marker_4d66fecaa139ae60bbc9a98c23216659 = L.marker(
+                [25.085048, 102.654396],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var div_icon_0cab8d70046ccf0dd0b7d4c8fc5a672d = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #2ECC71, #2ECC71dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u56fd\u9645\u6d3e2.0\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_4d66fecaa139ae60bbc9a98c23216659.setIcon(div_icon_0cab8d70046ccf0dd0b7d4c8fc5a672d);
+            
+    
+            var marker_b0a3a5dc69b29ee24a9a337499b24fd8 = L.marker(
+                [25.08995, 102.653864],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var icon_77ea7e2e8810ee46f019ad2d4b1ac3e7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#2ECC71",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e1b10bdcc58be1886352e2f8e968d836 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_22325a04d30ff98bc4a0037d225f3efa = $(`<div id="html_22325a04d30ff98bc4a0037d225f3efa" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #2ECC71; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏海屯加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 五华区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市五华区海屯路云师大商学院对面</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 65656147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 12</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.08995, 102.653864</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_e1b10bdcc58be1886352e2f8e968d836.setContent(html_22325a04d30ff98bc4a0037d225f3efa);
+            
+        
+
+        marker_b0a3a5dc69b29ee24a9a337499b24fd8.bindPopup(popup_e1b10bdcc58be1886352e2f8e968d836)
+        ;
+
+        
+    
+    
+            marker_b0a3a5dc69b29ee24a9a337499b24fd8.bindTooltip(
+                `<div>
+                     海屯 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b0a3a5dc69b29ee24a9a337499b24fd8.setIcon(icon_77ea7e2e8810ee46f019ad2d4b1ac3e7);
+            
+    
+            var marker_1268bea80213129a9baa3b3abeeed52d = L.marker(
+                [25.08995, 102.653864],
+                {
+}
+            ).addTo(feature_group_cd8a94baaa9f34288b553c4898b51339);
+        
+    
+            var div_icon_bd470dbdcc71553fd1aed625e652efe2 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #2ECC71, #2ECC71dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u6d77\u5c6f\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_1268bea80213129a9baa3b3abeeed52d.setIcon(div_icon_bd470dbdcc71553fd1aed625e652efe2);
+            
+    
+            feature_group_cd8a94baaa9f34288b553c4898b51339.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var feature_group_d6f6f094a5778fac2551ded8eeb25a7f = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_c69d729cfdcc1da6f3214b732188f942 = L.marker(
+                [24.95363, 102.782513],
+                {
+}
+            ).addTo(feature_group_d6f6f094a5778fac2551ded8eeb25a7f);
+        
+    
+            var icon_0cbf4f93bb6f9dae2c5e57488494528b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#3498DB",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_76112c20e9e63bfd2a82d61c4697ce22 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_f398919cde86faa8222074ab8c8ad94c = $(`<div id="html_f398919cde86faa8222074ab8c8ad94c" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #3498DB; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏子君加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 官渡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市官渡区子君村173号1楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 64647147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 13</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.95363, 102.782513</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_76112c20e9e63bfd2a82d61c4697ce22.setContent(html_f398919cde86faa8222074ab8c8ad94c);
+            
+        
+
+        marker_c69d729cfdcc1da6f3214b732188f942.bindPopup(popup_76112c20e9e63bfd2a82d61c4697ce22)
+        ;
+
+        
+    
+    
+            marker_c69d729cfdcc1da6f3214b732188f942.bindTooltip(
+                `<div>
+                     子君 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c69d729cfdcc1da6f3214b732188f942.setIcon(icon_0cbf4f93bb6f9dae2c5e57488494528b);
+            
+    
+            var marker_c8428053dd6e90b4b0d53b90237efd69 = L.marker(
+                [24.95363, 102.782513],
+                {
+}
+            ).addTo(feature_group_d6f6f094a5778fac2551ded8eeb25a7f);
+        
+    
+            var div_icon_ef21e922302b39d634aaf19ea36a60f5 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #3498DB, #3498DBdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u5b50\u541b\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_c8428053dd6e90b4b0d53b90237efd69.setIcon(div_icon_ef21e922302b39d634aaf19ea36a60f5);
+            
+    
+            var marker_05dbe698161cb818e8da2d8a2363a1f5 = L.marker(
+                [24.952622, 102.773629],
+                {
+}
+            ).addTo(feature_group_d6f6f094a5778fac2551ded8eeb25a7f);
+        
+    
+            var icon_03762382f00f63c348b79c7146f5e60c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#3498DB",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7d53754a92eb590bc7e4f4dd152a5dc8 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_faacb1b54cfa45e32742fc11698f038f = $(`<div id="html_faacb1b54cfa45e32742fc11698f038f" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #3498DB; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏体育城加盟总店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 官渡区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市官渡区新亚洲体育城砖瓦厂国际3楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 65655147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 14</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.952622, 102.773629</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_7d53754a92eb590bc7e4f4dd152a5dc8.setContent(html_faacb1b54cfa45e32742fc11698f038f);
+            
+        
+
+        marker_05dbe698161cb818e8da2d8a2363a1f5.bindPopup(popup_7d53754a92eb590bc7e4f4dd152a5dc8)
+        ;
+
+        
+    
+    
+            marker_05dbe698161cb818e8da2d8a2363a1f5.bindTooltip(
+                `<div>
+                     体育城 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_05dbe698161cb818e8da2d8a2363a1f5.setIcon(icon_03762382f00f63c348b79c7146f5e60c);
+            
+    
+            var marker_0f042a39ac95b4c152b54bf981f98bc6 = L.marker(
+                [24.952622, 102.773629],
+                {
+}
+            ).addTo(feature_group_d6f6f094a5778fac2551ded8eeb25a7f);
+        
+    
+            var div_icon_5877018c8ad59ff31de439f3fb63ff7d = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #3498DB, #3498DBdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u4f53\u80b2\u57ce\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_0f042a39ac95b4c152b54bf981f98bc6.setIcon(div_icon_5877018c8ad59ff31de439f3fb63ff7d);
+            
+    
+            feature_group_d6f6f094a5778fac2551ded8eeb25a7f.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var feature_group_8cbf87626fd4a22ce2f1e4a038e62b76 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_40309bb2209bbc8dcafaab12ff0fcce2 = L.marker(
+                [25.056486, 102.744412],
+                {
+}
+            ).addTo(feature_group_8cbf87626fd4a22ce2f1e4a038e62b76);
+        
+    
+            var icon_fefdb01118063bc3e826384bfcd4d1fb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#9B59B6",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f22f7ad60efe645c415ac5e895287757 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_0ab0da28e83dd939e1a228c85fad7423 = $(`<div id="html_0ab0da28e83dd939e1a228c85fad7423" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #9B59B6; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏新迎加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 盘龙区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市盘龙区田园路森林酒吧楼上</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 64641147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 15</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.056486, 102.744412</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_f22f7ad60efe645c415ac5e895287757.setContent(html_0ab0da28e83dd939e1a228c85fad7423);
+            
+        
+
+        marker_40309bb2209bbc8dcafaab12ff0fcce2.bindPopup(popup_f22f7ad60efe645c415ac5e895287757)
+        ;
+
+        
+    
+    
+            marker_40309bb2209bbc8dcafaab12ff0fcce2.bindTooltip(
+                `<div>
+                     新迎 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_40309bb2209bbc8dcafaab12ff0fcce2.setIcon(icon_fefdb01118063bc3e826384bfcd4d1fb);
+            
+    
+            var marker_c3db6d49917fcee423ad357491dac379 = L.marker(
+                [25.056486, 102.744412],
+                {
+}
+            ).addTo(feature_group_8cbf87626fd4a22ce2f1e4a038e62b76);
+        
+    
+            var div_icon_ea5184eaaeb5982c1f20c0ec566bc620 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #9B59B6, #9B59B6dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u65b0\u8fce\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_c3db6d49917fcee423ad357491dac379.setIcon(div_icon_ea5184eaaeb5982c1f20c0ec566bc620);
+            
+    
+            var marker_50871d621652819bd883b019678bfeb4 = L.marker(
+                [25.058366, 102.75418],
+                {
+}
+            ).addTo(feature_group_8cbf87626fd4a22ce2f1e4a038e62b76);
+        
+    
+            var icon_6992c28292d46b59ccad2f25d098c34d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#9B59B6",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9a4602f861c042b6dffa4187160b6a8c = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_6b4609a494c86980ffa929dc2731c819 = $(`<div id="html_6b4609a494c86980ffa929dc2731c819" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #9B59B6; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏西南林大加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 盘龙区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市盘龙区迎溪村昆华路196号2楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 64137147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 16</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 25.058366, 102.75418</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_9a4602f861c042b6dffa4187160b6a8c.setContent(html_6b4609a494c86980ffa929dc2731c819);
+            
+        
+
+        marker_50871d621652819bd883b019678bfeb4.bindPopup(popup_9a4602f861c042b6dffa4187160b6a8c)
+        ;
+
+        
+    
+    
+            marker_50871d621652819bd883b019678bfeb4.bindTooltip(
+                `<div>
+                     西南林大 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_50871d621652819bd883b019678bfeb4.setIcon(icon_6992c28292d46b59ccad2f25d098c34d);
+            
+    
+            var marker_5d4cb05e088259bb6fdf576351e4012b = L.marker(
+                [25.058366, 102.75418],
+                {
+}
+            ).addTo(feature_group_8cbf87626fd4a22ce2f1e4a038e62b76);
+        
+    
+            var div_icon_425fd5e2747f294bbde5e04618ef6ef9 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #9B59B6, #9B59B6dd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u897f\u5357\u6797\u5927\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_5d4cb05e088259bb6fdf576351e4012b.setIcon(div_icon_425fd5e2747f294bbde5e04618ef6ef9);
+            
+    
+            feature_group_8cbf87626fd4a22ce2f1e4a038e62b76.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var feature_group_17da6e27b5f518863ed9a44eb98d6afa = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_0683729acbc52e73b263f1c2ce33b546 = L.marker(
+                [24.668371, 102.600876],
+                {
+}
+            ).addTo(feature_group_17da6e27b5f518863ed9a44eb98d6afa);
+        
+    
+            var icon_4adf83637bf8251cf494899d7327ff4e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#F39C12",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0ce190c1ae012f77c9b6d8c1bd08b28d = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_d9e5c62f3a0264cff75ff4d3321654cd = $(`<div id="html_d9e5c62f3a0264cff75ff4d3321654cd" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #F39C12; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏昆阳加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 晋宁区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市晋宁区清河路东门小区475号2楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 67888147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 17</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.668371, 102.600876</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_0ce190c1ae012f77c9b6d8c1bd08b28d.setContent(html_d9e5c62f3a0264cff75ff4d3321654cd);
+            
+        
+
+        marker_0683729acbc52e73b263f1c2ce33b546.bindPopup(popup_0ce190c1ae012f77c9b6d8c1bd08b28d)
+        ;
+
+        
+    
+    
+            marker_0683729acbc52e73b263f1c2ce33b546.bindTooltip(
+                `<div>
+                     昆阳 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0683729acbc52e73b263f1c2ce33b546.setIcon(icon_4adf83637bf8251cf494899d7327ff4e);
+            
+    
+            var marker_0c4526f148735df9b4937b995c58e93f = L.marker(
+                [24.668371, 102.600876],
+                {
+}
+            ).addTo(feature_group_17da6e27b5f518863ed9a44eb98d6afa);
+        
+    
+            var div_icon_40129588c9f5631bb1a49239e1d782ff = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #D35400, #E67E22);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 8px 14px;\n            font-size: 15px;\n            font-weight: 900;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 12px rgba(0,0,0,0.5);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 70px;\n            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);\n            letter-spacing: 1px;\n        \"\u003e\n                \u6606\u9633\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_0c4526f148735df9b4937b995c58e93f.setIcon(div_icon_40129588c9f5631bb1a49239e1d782ff);
+            
+    
+            var marker_6ea9729c63decc999f77c9b054f5a942 = L.marker(
+                [24.667413, 102.599722],
+                {
+}
+            ).addTo(feature_group_17da6e27b5f518863ed9a44eb98d6afa);
+        
+    
+            var icon_17fe10d8d3d3d9e8c891f040238e1f4d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#F39C12",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5a33b374830d4e5de38a2db72aafce1f = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_6fccba92d0636da42514a6712b1ae3c6 = $(`<div id="html_6fccba92d0636da42514a6712b1ae3c6" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #F39C12; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏昆阳春晖路加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 晋宁区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市晋宁区春晖路33号苏宁易购3楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 64645147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 18</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.667413, 102.599722</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_5a33b374830d4e5de38a2db72aafce1f.setContent(html_6fccba92d0636da42514a6712b1ae3c6);
+            
+        
+
+        marker_6ea9729c63decc999f77c9b054f5a942.bindPopup(popup_5a33b374830d4e5de38a2db72aafce1f)
+        ;
+
+        
+    
+    
+            marker_6ea9729c63decc999f77c9b054f5a942.bindTooltip(
+                `<div>
+                     昆阳春晖 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6ea9729c63decc999f77c9b054f5a942.setIcon(icon_17fe10d8d3d3d9e8c891f040238e1f4d);
+            
+    
+            var marker_bacda4e1352a968b03bc09b55093c343 = L.marker(
+                [24.667413, 102.599722],
+                {
+}
+            ).addTo(feature_group_17da6e27b5f518863ed9a44eb98d6afa);
+        
+    
+            var div_icon_a084d32599d2759091ce2d2a74e514f1 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #D35400, #E67E22);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 8px 14px;\n            font-size: 15px;\n            font-weight: 900;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 12px rgba(0,0,0,0.5);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 70px;\n            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);\n            letter-spacing: 1px;\n        \"\u003e\n                \u6606\u9633\u6625\u6656\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_bacda4e1352a968b03bc09b55093c343.setIcon(div_icon_a084d32599d2759091ce2d2a74e514f1);
+            
+    
+            var marker_3e59ce32e21566d358fa3ad5b05cbc8a = L.marker(
+                [24.71113, 102.755883],
+                {
+}
+            ).addTo(feature_group_17da6e27b5f518863ed9a44eb98d6afa);
+        
+    
+            var icon_68e6f00ac909e6cbe72e3637c33b333a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#F39C12",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8bb3f909ecf29245b7b7da10c6c49c88 = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_b357f52dcc05d65281b647743303351e = $(`<div id="html_b357f52dcc05d65281b647743303351e" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #F39C12; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏晋城加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 晋宁区</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 昆明市晋宁区晋城龙羊烧烤城2楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 67450147</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 19</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.71113, 102.755883</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_8bb3f909ecf29245b7b7da10c6c49c88.setContent(html_b357f52dcc05d65281b647743303351e);
+            
+        
+
+        marker_3e59ce32e21566d358fa3ad5b05cbc8a.bindPopup(popup_8bb3f909ecf29245b7b7da10c6c49c88)
+        ;
+
+        
+    
+    
+            marker_3e59ce32e21566d358fa3ad5b05cbc8a.bindTooltip(
+                `<div>
+                     晋城 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3e59ce32e21566d358fa3ad5b05cbc8a.setIcon(icon_68e6f00ac909e6cbe72e3637c33b333a);
+            
+    
+            var marker_3862795686485162c0c7bef75c3e420f = L.marker(
+                [24.71113, 102.755883],
+                {
+}
+            ).addTo(feature_group_17da6e27b5f518863ed9a44eb98d6afa);
+        
+    
+            var div_icon_e40fc1879b045e9d5a8a662389083d19 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #D35400, #E67E22);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 8px 14px;\n            font-size: 15px;\n            font-weight: 900;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 12px rgba(0,0,0,0.5);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 70px;\n            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);\n            letter-spacing: 1px;\n        \"\u003e\n                \u664b\u57ce\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_3862795686485162c0c7bef75c3e420f.setIcon(div_icon_e40fc1879b045e9d5a8a662389083d19);
+            
+    
+            feature_group_17da6e27b5f518863ed9a44eb98d6afa.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var feature_group_d9ed40b644aed24e1a80138d9a157b68 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_e0de52cc0afcded6753da37d2cec4729 = L.marker(
+                [24.6734705, 102.9134757],
+                {
+}
+            ).addTo(feature_group_d9ed40b644aed24e1a80138d9a157b68);
+        
+    
+            var icon_71c05a3b3727e02f698d91b93a047b43 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#8E44AD",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2b7ba2023e4d7fc93b9dfc8146f409cd = L.popup({
+  "maxWidth": 370,
+});
+
+        
+            
+                var html_6780ed59265573c541c75c3f26edd8cd = $(`<div id="html_6780ed59265573c541c75c3f26edd8cd" style="width: 100.0%; height: 100.0%;">     <div style="width: 320px; font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;">         <h3 style="color: #8E44AD; margin: 0 0 12px 0; text-align: center; font-size: 16px; font-weight: bold;">             耶氏澄江加盟店         </h3>         <div style="background-color: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px;">             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 区域:</strong> 澄江市</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📍 地址:</strong> 云南省玉溪市澄江市环城西路90号老仓库来线原墨院内二楼</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>📞 电话:</strong> 待补充</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🏪 编号:</strong> 20</p>             <p style="margin: 5px 0; font-size: 14px;"><strong>🎯 坐标:</strong> 真实坐标</p>             <p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>🌐 位置:</strong> 24.673471, 102.913476</p>         </div>         <div style="text-align: center; padding: 8px; background: linear-gradient(135deg, #2C3E50, #34495E); border-radius: 8px; color: white; font-weight: bold; font-size: 14px;">             🎱 耶氏台球，台球 YES 🎱         </div>     </div>     </div>`)[0];
+                popup_2b7ba2023e4d7fc93b9dfc8146f409cd.setContent(html_6780ed59265573c541c75c3f26edd8cd);
+            
+        
+
+        marker_e0de52cc0afcded6753da37d2cec4729.bindPopup(popup_2b7ba2023e4d7fc93b9dfc8146f409cd)
+        ;
+
+        
+    
+    
+            marker_e0de52cc0afcded6753da37d2cec4729.bindTooltip(
+                `<div>
+                     澄江 (真实坐标) - 点击查看详情
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e0de52cc0afcded6753da37d2cec4729.setIcon(icon_71c05a3b3727e02f698d91b93a047b43);
+            
+    
+            var marker_81b12c4c2eb12c9bdad9dc39aa99976c = L.marker(
+                [24.6734705, 102.9134757],
+                {
+}
+            ).addTo(feature_group_d9ed40b644aed24e1a80138d9a157b68);
+        
+    
+            var div_icon_ead6796b1f831c181e77b395146c9588 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"\n            background: linear-gradient(135deg, #8E44AD, #8E44ADdd);\n            color: white;\n            border: 3px solid white;\n            border-radius: 12px;\n            padding: 6px 12px;\n            font-size: 14px;\n            font-weight: bold;\n            font-family: \u0027Microsoft YaHei\u0027, \u0027PingFang SC\u0027, \u0027Hiragino Sans GB\u0027, sans-serif;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.4);\n            white-space: nowrap;\n            transform: translate(-50%, -100%);\n            margin-top: -15px;\n            min-width: 60px;\n            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n        \"\u003e\n                \u6f84\u6c5f\n            \u003c/div\u003e\n            ",
+  "iconSize": [null, null],
+  "iconAnchor": [0, 0],
+  "className": "empty",
+});
+        
+    
+                marker_81b12c4c2eb12c9bdad9dc39aa99976c.setIcon(div_icon_ead6796b1f831c181e77b395146c9588);
+            
+    
+            feature_group_d9ed40b644aed24e1a80138d9a157b68.addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+        
+    
+            var layer_control_989ce74914acbca78b9e50c0afc777bf_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_e158eaf824c1f1c7a5414a438a5f874e,
+                    "\u5730\u5f62\u56fe" : tile_layer_0e1348703719884dd71c5b0adf248bb0,
+                    "\u7b80\u6d01\u5730\u56fe" : tile_layer_2e86cb26c7e9f775d99f67f5cfd8889b,
+                },
+                overlays :  {
+                    "\u5448\u8d21\u533a\u95e8\u5e97" : feature_group_330ab2f496c239aa6fbf1f69bd56e5c8,
+                    "\u4e94\u534e\u533a\u95e8\u5e97" : feature_group_cd8a94baaa9f34288b553c4898b51339,
+                    "\u5b98\u6e21\u533a\u95e8\u5e97" : feature_group_d6f6f094a5778fac2551ded8eeb25a7f,
+                    "\u76d8\u9f99\u533a\u95e8\u5e97" : feature_group_8cbf87626fd4a22ce2f1e4a038e62b76,
+                    "\u664b\u5b81\u533a\u95e8\u5e97" : feature_group_17da6e27b5f518863ed9a44eb98d6afa,
+                    "\u6f84\u6c5f\u5e02\u95e8\u5e97" : feature_group_d9ed40b644aed24e1a80138d9a157b68,
+                },
+            };
+            let layer_control_989ce74914acbca78b9e50c0afc777bf = L.control.layers(
+                layer_control_989ce74914acbca78b9e50c0afc777bf_layers.base_layers,
+                layer_control_989ce74914acbca78b9e50c0afc777bf_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_3eedb154dfadbd3cc3ab9d4b8d20a14a);
+
+        
+</script>
+</html>

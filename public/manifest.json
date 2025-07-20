@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "耶氏体育",
+  "name": "耶氏台球连锁 - 专业台球装备与培训",
+  "description": "云南最大的台球连锁品牌，提供专业台球装备销售、技术培训和门店服务",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,18 +9,42 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "yes-logo.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
-      "src": "logo512.png",
+      "src": "yes-logo.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#2196F3",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "categories": ["sports", "business", "education"],
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "预约培训",
+      "short_name": "预约",
+      "description": "快速预约台球培训课程",
+      "url": "/training/booking",
+      "icons": [{ "src": "yes-logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "附近门店",
+      "short_name": "门店",
+      "description": "查找附近的耶氏台球门店",
+      "url": "/stores",
+      "icons": [{ "src": "yes-logo.png", "sizes": "96x96" }]
+    }
+  ]
 }

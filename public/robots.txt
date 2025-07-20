@@ -1,3 +1,27 @@
-# https://www.robotstxt.org/robotstxt.html
+# robots.txt for Yes Sports Website
+# https://yes-sports.com
+
 User-agent: *
-Disallow:
+Allow: /
+
+# 允许爬取的目录
+Allow: /products/
+Allow: /stores/
+Allow: /training/
+Allow: /about/
+Allow: /contact/
+Allow: /franchise/
+
+# 禁止爬取的目录
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+
+# 爬取延迟（秒）
+Crawl-delay: 1
+
+# 站点地图
+Sitemap: https://yes-sports.com/sitemap.xml
