@@ -200,7 +200,7 @@ export class FieldResonance {
     }
     
     // 活动时间相关（针对培训）
-    if (this.isTraining(content) && content.schedule) {
+    if (this.isTraining(content) && content.schedule && Array.isArray(content.schedule)) {
       // 检查是否有即将开始的课程
       const hasUpcomingSession = content.schedule.some((session: any) => {
         const sessionDate = new Date(session.date);

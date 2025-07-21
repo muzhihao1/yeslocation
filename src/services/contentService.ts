@@ -432,7 +432,7 @@ export class ContentService {
             title: program.title,
             content: `**课程时长**: ${program.duration}\n\n**课程费用**: ¥${program.price}\n\n**课程介绍**: ${program.description}\n\n**适合人群**: ${program.level === 'beginner' ? '初学者' : program.level === 'intermediate' ? '有一定基础' : '专业人士'}`,
             level: 3,
-            media: program.schedule ? [{
+            media: program.schedule && Array.isArray(program.schedule) ? [{
               type: "embed" as const,
               url: "#schedule",
               caption: `最近开课时间: ${program.schedule[0]?.date || '请咨询'}`,
