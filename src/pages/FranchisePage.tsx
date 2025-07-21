@@ -406,7 +406,7 @@ export const FranchisePage: React.FC = () => {
       <section id="contact-form" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg">
-            <h2 className="text-3xl font-bold text-yes-dark text-center mb-8">
+            <h2 className="text-3xl font-bold text-neutral-800 text-center mb-8">
               立即咨询加盟
             </h2>
 
@@ -440,7 +440,7 @@ export const FranchisePage: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="请输入您想开店的城市"
                 />
               </div>
@@ -463,7 +463,7 @@ export const FranchisePage: React.FC = () => {
                 </label>
                 <textarea
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="请告诉我们您的需求或疑问"
                 />
               </div>
@@ -484,7 +484,7 @@ export const FranchisePage: React.FC = () => {
 
             <div className="mt-8 text-center text-gray-600">
               <p className="mb-2">或直接致电咨询</p>
-              <p className="text-2xl font-bold text-yes-green">177-8714-7147</p>
+              <p className="text-2xl font-bold text-primary-600">177-8714-7147</p>
             </div>
           </div>
         </div>

@@ -204,7 +204,6 @@ export const StorePage: React.FC = () => {
             ))}
           </div>
         ) : null}
-      </motion.div>
       
       {/* 门店总览 */}
       {!loading && statistics && stores.length > 0 && (
