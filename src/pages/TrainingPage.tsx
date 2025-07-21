@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextEngine } from '../context/ContextEngine';
 import { useBehaviorTracking } from '../hooks/useBehaviorTracking';
-import { Button, Card } from '../components';
+import { Button, Card, TrainingDetailsModal } from '../components';
 import { api, TrainingProgram } from '../services/api';
 
+// 路由路径到视图的映射
+const pathToViewMap: Record<string, string> = {
+  '/training': 'courses', // 默认显示课程体系
+  '/training/courses': 'courses',
+  '/training/coaches': 'coaches', 
+  '/training/booking': 'booking'
+};
+
 export const TrainingPage: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { trackClick, engagementLevel } = useBehaviorTracking();
   const { state, dispatch } = useContextEngine();
   const [trainingPrograms, setTrainingPrograms] = useState<TrainingProgram[]>([]);
@@ -14,6 +25,23 @@ export const TrainingPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<'installation' | 'academy' | 'all'>('all');
   const [showEnrollForm, setShowEnrollForm] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<TrainingProgram | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [detailsProgram, setDetailsProgram] = useState<TrainingProgram | null>(null);
+  
+  // 根据路由路径确定当前视图
+  const currentView = pathToViewMap[location.pathname] || 'courses';
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    programId: '',
+    level: '',
+    message: ''
+  });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   useEffect(() => {
     // 更新用户兴趣
@@ -48,6 +76,81 @@ export const TrainingPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // 表单验证
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = '请输入您的姓名';
+    }
+    
+    if (!formData.phone.trim()) {
+      errors.phone = '请输入联系电话';
+    } else if (!/^1[3-9]\d{9}$/.test(formData.phone)) {
+      errors.phone = '请输入正确的手机号码';
+    }
+    
+    if (!formData.programId) {
+      errors.programId = '请选择培训课程';
+    }
+    
+    if (!formData.level) {
+      errors.level = '请选择您的当前水平';
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // 处理表单提交
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    setSubmitting(true);
+    trackClick('training-form-submit');
+    
+    try {
+      // 模拟API调用
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // 成功提交
+      setSubmitSuccess(true);
+      
+      // 重置表单
+      setFormData({
+        name: '',
+        phone: '',
+        programId: '',
+        level: '',
+        message: ''
+      });
+      setSelectedProgram(null);
+      setFormErrors({});
+      
+      // 3秒后隐藏成功消息
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setFormErrors({ submit: '提交失败，请稍后重试' });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // 更新选中的课程时同步更新表单数据
+  useEffect(() => {
+    if (selectedProgram) {
+      setFormData(prev => ({ ...prev, programId: selectedProgram.id }));
+    }
+  }, [selectedProgram]);
   
   const filteredPrograms = selectedCategory === 'all' 
     ? trainingPrograms 
@@ -110,13 +213,13 @@ export const TrainingPage: React.FC = () => {
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="relative bg-gradient-to-br from-yes-dark to-yes-green text-white py-20"
+        className="relative bg-gradient-to-br from-primary-600 to-primary-500 text-white py-20"
       >
         <div className="container mx-auto px-4 text-center">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold mb-6"
+            className="text-5xl font-bold mb-6 text-white"
           >
             专业培训中心
           </motion.h1>
@@ -124,7 +227,7 @@ export const TrainingPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-2xl mb-8 max-w-3xl mx-auto"
+            className="text-2xl mb-8 max-w-3xl mx-auto text-white/90"
           >
             从零基础到专业高手，我们陪您一路成长
           </motion.p>
@@ -147,8 +250,58 @@ export const TrainingPage: React.FC = () => {
         </div>
       </motion.section>
 
-      {/* Why Choose Us */}
-      <section className="py-16 bg-white">
+      {/* Navigation Tabs */}
+      <section className="bg-white border-b">
+        <div className="container mx-auto px-4">
+          <nav className="flex space-x-8">
+            <button
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                currentView === 'courses'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              onClick={() => {
+                navigate('/training/courses');
+                trackClick('training-nav-courses');
+              }}
+            >
+              课程体系
+            </button>
+            <button
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                currentView === 'coaches'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              onClick={() => {
+                navigate('/training/coaches');
+                trackClick('training-nav-coaches');
+              }}
+            >
+              教练团队
+            </button>
+            <button
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                currentView === 'booking'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              onClick={() => {
+                navigate('/training/booking');
+                trackClick('training-nav-booking');
+              }}
+            >
+              在线预约
+            </button>
+          </nav>
+        </div>
+      </section>
+
+      {/* Conditional Content Based on View */}
+      {currentView === 'courses' ? (
+        <>
+          {/* Why Choose Us */}
+          <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-yes-dark text-center mb-12">
             为什么选择耶氏培训
@@ -313,6 +466,15 @@ export const TrainingPage: React.FC = () => {
                             setSelectedProgram(program);
                             setShowEnrollForm(true);
                             trackClick(`enroll-program-${program.id}`);
+                            // Scroll to enrollment form
+                            setTimeout(() => {
+                              document.getElementById('enrollment-form')?.scrollIntoView({ 
+                                behavior: 'smooth',
+                                block: 'center'
+                              });
+                              // Reset the flag after animation
+                              setTimeout(() => setShowEnrollForm(false), 500);
+                            }, 100);
                           }}
                         >
                           立即报名
@@ -322,7 +484,8 @@ export const TrainingPage: React.FC = () => {
                           size="sm"
                           onClick={() => {
                             trackClick(`view-details-${program.id}`);
-                            // 查看详情功能
+                            setDetailsProgram(program);
+                            setShowDetailsModal(true);
                           }}
                         >
                           了解详情
@@ -336,8 +499,46 @@ export const TrainingPage: React.FC = () => {
         </div>
       </motion.section>
 
-      {/* Instructors */}
-      <section className="py-16 bg-white">
+          {/* Success Stories */}
+          <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-500">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl font-bold text-center mb-12 text-white">
+                学员成功故事
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="bg-white bg-opacity-20 backdrop-blur p-6 rounded-lg shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="text-4xl">🌟</div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2 text-white">刘小明 - 从爱好者到职业选手</h3>
+                      <p className="text-white/90">
+                        通过3个月的系统培训，从业余爱好者成长为省级比赛前八强，现已签约成为职业选手。
+                      </p>
+                      <p className="text-sm text-white/70 mt-2">2023年毕业学员</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white bg-opacity-20 backdrop-blur p-6 rounded-lg shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="text-4xl">💼</div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2 text-white">王美丽 - 成功创业开店</h3>
+                      <p className="text-white/90">
+                        完成运营管理培训后，在老家成功开设台球厅，月营业额超15万，已准备开第二家店。
+                      </p>
+                      <p className="text-sm text-white/70 mt-2">2022年毕业学员</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </>
+      ) : currentView === 'coaches' ? (
+        /* Instructors */
+        <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-yes-dark text-center mb-12">
             专业教练团队
@@ -345,81 +546,91 @@ export const TrainingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center p-6 bg-white rounded-lg shadow-lg">
-              <div className="w-32 h-32 bg-gradient-to-br from-yes-green to-yes-dark rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
-                张教练
+              <div className="w-32 h-32 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
+                耿教练
               </div>
-              <h3 className="text-xl font-semibold text-yes-dark mb-2">张明华</h3>
-              <p className="text-yes-green mb-2">高级技术教练</p>
+              <h3 className="text-xl font-semibold text-neutral-800 mb-2">耿新位</h3>
+              <p className="text-primary-600 mb-2">高级技术教练</p>
               <p className="text-gray-600">15年专业台球教学经验，培养出多名省级比赛冠军</p>
             </div>
 
             <div className="text-center p-6 bg-white rounded-lg shadow-lg">
-              <div className="w-32 h-32 bg-gradient-to-br from-yes-dark to-yes-green rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
-                李教练
+              <div className="w-32 h-32 bg-gradient-to-br from-primary-600 to-primary-500 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
+                陈教练
               </div>
-              <h3 className="text-xl font-semibold text-yes-dark mb-2">李建国</h3>
-              <p className="text-yes-green mb-2">运营管理专家</p>
+              <h3 className="text-xl font-semibold text-neutral-800 mb-2">陈东泽</h3>
+              <p className="text-primary-600 mb-2">运营管理专家</p>
               <p className="text-gray-600">10年连锁门店管理经验，精通台球厅运营管理</p>
             </div>
 
             <div className="text-center p-6 bg-white rounded-lg shadow-lg">
-              <div className="w-32 h-32 bg-gradient-to-br from-yes-green to-yes-dark rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
-                王师傅
+              <div className="w-32 h-32 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
+                庞师傅
               </div>
-              <h3 className="text-xl font-semibold text-yes-dark mb-2">王志强</h3>
-              <p className="text-yes-green mb-2">安装技术总监</p>
+              <h3 className="text-xl font-semibold text-neutral-800 mb-2">庞明儒</h3>
+              <p className="text-primary-600 mb-2">安装技术总监</p>
               <p className="text-gray-600">20年台球桌安装维护经验，技术精湛</p>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Success Stories */}
-      <section className="py-16 bg-gradient-to-r from-yes-dark to-yes-green text-white">
+      ) : currentView === 'booking' ? (
+        /* Enrollment Form */
+        <section id="enrollment-form" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            学员成功故事
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white bg-opacity-10 backdrop-blur p-6 text-white rounded-lg shadow-lg">
-              <div className="flex items-start gap-4">
-                <div className="text-4xl">🌟</div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">刘小明 - 从爱好者到职业选手</h3>
-                  <p className="opacity-90">
-                    通过3个月的系统培训，从业余爱好者成长为省级比赛前八强，现已签约成为职业选手。
-                  </p>
-                  <p className="text-sm opacity-70 mt-2">2023年毕业学员</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white bg-opacity-10 backdrop-blur p-6 text-white rounded-lg shadow-lg">
-              <div className="flex items-start gap-4">
-                <div className="text-4xl">💼</div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">王美丽 - 成功创业开店</h3>
-                  <p className="opacity-90">
-                    完成运营管理培训后，在老家成功开设台球厅，月营业额超15万，已准备开第二家店。
-                  </p>
-                  <p className="text-sm opacity-70 mt-2">2022年毕业学员</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Enrollment Form */}
-      <section id="enrollment-form" className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+          <motion.div 
+            className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg"
+            animate={{ 
+              scale: showEnrollForm ? [1, 1.02, 1] : 1,
+              boxShadow: showEnrollForm 
+                ? "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
+                : "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+            }}
+            transition={{ duration: 0.3 }}
+          >
             <h2 className="text-3xl font-bold text-yes-dark text-center mb-8">
               立即报名
             </h2>
+            
+            {/* 成功消息 */}
+            {submitSuccess && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
+              >
+                <p className="text-green-800 font-medium text-center">
+                  ✅ 报名成功！我们会尽快与您联系。
+                </p>
+              </motion.div>
+            )}
+            
+            {/* 全局错误消息 */}
+            {formErrors.submit && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
+              >
+                <p className="text-red-800 font-medium text-center">
+                  {formErrors.submit}
+                </p>
+              </motion.div>
+            )}
+            
+            {selectedProgram && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
+              >
+                <p className="text-green-800 font-medium">
+                  已选择课程：<span className="font-bold">{selectedProgram.title}</span>
+                </p>
+              </motion.div>
+            )}
 
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -427,9 +638,16 @@ export const TrainingPage: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent"
+                    value={formData.name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent ${
+                      formErrors.name ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="请输入姓名"
                   />
+                  {formErrors.name && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -437,9 +655,16 @@ export const TrainingPage: React.FC = () => {
                   </label>
                   <input
                     type="tel"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent ${
+                      formErrors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="请输入手机号"
                   />
+                  {formErrors.phone && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.phone}</p>
+                  )}
                 </div>
               </div>
 
@@ -447,27 +672,49 @@ export const TrainingPage: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   选择课程
                 </label>
-                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent">
-                  <option>请选择培训课程</option>
-                  <option value="installation">安装维修培训</option>
-                  <option value="academy">台球技术培训</option>
-                  {selectedProgram && (
-                    <option value={selectedProgram.id} selected>{selectedProgram.title}</option>
-                  )}
+                <select 
+                  value={formData.programId}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, programId: e.target.value }));
+                    const program = trainingPrograms.find(p => p.id === e.target.value);
+                    setSelectedProgram(program || null);
+                  }}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent ${
+                    formErrors.programId ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                >
+                  <option value="">请选择培训课程</option>
+                  {trainingPrograms.map(program => (
+                    <option key={program.id} value={program.id}>
+                      {program.title}
+                    </option>
+                  ))}
                 </select>
+                {formErrors.programId && (
+                  <p className="mt-1 text-sm text-red-600">{formErrors.programId}</p>
+                )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   当前水平
                 </label>
-                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent">
-                  <option>请选择您的当前水平</option>
-                  <option>零基础</option>
-                  <option>初级水平</option>
-                  <option>中级水平</option>
-                  <option>高级水平</option>
+                <select 
+                  value={formData.level}
+                  onChange={(e) => setFormData(prev => ({ ...prev, level: e.target.value }))}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent ${
+                    formErrors.level ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                >
+                  <option value="">请选择您的当前水平</option>
+                  <option value="beginner">零基础</option>
+                  <option value="elementary">初级水平</option>
+                  <option value="intermediate">中级水平</option>
+                  <option value="advanced">高级水平</option>
                 </select>
+                {formErrors.level && (
+                  <p className="mt-1 text-sm text-red-600">{formErrors.level}</p>
+                )}
               </div>
 
               <div>
@@ -476,6 +723,8 @@ export const TrainingPage: React.FC = () => {
                 </label>
                 <textarea
                   rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent"
                   placeholder="请告诉我们您的学习目标或特殊需求"
                 />
@@ -483,14 +732,23 @@ export const TrainingPage: React.FC = () => {
 
               <div className="text-center">
                 <Button
+                  type="submit"
                   variant="primary"
                   size="lg"
-                  onClick={() => {
-                    trackClick('training-form-submit');
-                    alert('感谢您的报名！我们会尽快与您联系。');
-                  }}
+                  disabled={submitting}
+                  className="min-w-[160px]"
                 >
-                  提交报名
+                  {submitting ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      提交中...
+                    </span>
+                  ) : (
+                    '提交报名'
+                  )}
                 </Button>
               </div>
             </form>
@@ -499,15 +757,39 @@ export const TrainingPage: React.FC = () => {
               <p className="mb-2">咨询热线</p>
               <p className="text-2xl font-bold text-yes-green">177-8714-7147</p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
+      ) : null}
+
+      {/* Training Details Modal */}
+      <TrainingDetailsModal
+        isOpen={showDetailsModal}
+        onClose={() => {
+          setShowDetailsModal(false);
+          setDetailsProgram(null);
+        }}
+        program={detailsProgram}
+        onEnroll={(program) => {
+          setSelectedProgram(program);
+          setShowEnrollForm(true);
+          trackClick(`enroll-from-details-${program.id}`);
+          // Scroll to enrollment form
+          setTimeout(() => {
+            document.getElementById('enrollment-form')?.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }, 100);
+        }}
+      />
 
       {/* Context指示器（开发模式） */}
       {process.env.NODE_ENV === 'development' && (
         <div className="fixed bottom-4 left-4 bg-black bg-opacity-80 text-white p-2 rounded text-xs">
           <p>参与度：{engagementLevel}</p>
-          <p>选中课程：{selectedCategory}</p>
+          <p>当前视图：{currentView}</p>
+          <p>选中分类：{selectedCategory}</p>
         </div>
       )}
     </div>

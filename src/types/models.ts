@@ -141,11 +141,13 @@ export interface TrainingProgram {
   certification: boolean;
   popularity: number;
   modules?: string[];
+  features?: string[];
+  requirements?: string[];
   schedule?: Array<{
     date: string;
     time: string;
     location: string;
-  }>;
+  }> | string;
 }
 
 // 内容推荐
@@ -196,4 +198,21 @@ export interface BookingFormData {
   storeId: string;
   coachId?: string;
   message?: string;
+}
+
+// 产品咨询表单数据
+export interface ProductInquiryFormData {
+  name: string;
+  phone: string;
+  product: string;
+  quantity: number;
+  message?: string;
+}
+
+// 产品咨询记录
+export interface ProductInquiry extends ProductInquiryFormData {
+  id: string;
+  submittedAt: string;
+  status: 'pending' | 'processing' | 'contacted' | 'completed';
+  followUpNotes?: string;
 }

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { useContextEngine } from '../context/ContextEngine';
 import { useBehaviorTracking } from '../hooks/useBehaviorTracking';
 import { Button, Card } from '../components';
 import { SEO } from '../components/atoms/SEO';
 import { api } from '../services/api';
 import { generateBreadcrumbSchema } from '../utils/structuredData';
+import { productInquiryService } from '../services/productInquiryService';
+import type { ProductInquiry, ProductInquiryFormData } from '../types/models';
 
 interface Brand {
   name: string;
@@ -32,34 +35,65 @@ const productShowcase: Record<string, Product[]> = {
     { name: '鑫隆基商用型', specs: '性价比之选，稳定耐用', price: '¥12,000起' },
     { name: '申天堂家用款', specs: '紧凑设计，适合家庭', price: '¥6,800起' }
   ],
-  '球杆': [
+  '球杆配件': [
     { name: '职业级碳纤维杆', specs: '超轻设计，精准控制', price: '¥3,800' },
-    { name: '高级枫木杆', specs: '传统工艺，手感出色', price: '¥2,200' },
-    { name: '入门练习杆', specs: '适合初学者', price: '¥380' },
-    { name: '儿童专用杆', specs: '轻巧短杆设计', price: '¥280' }
-  ],
-  '配件': [
     { name: '进口6811台呢', specs: '世界锦标赛指定用呢', price: '¥1,800/套' },
     { name: '水晶球套装', specs: '高透明度，精准重量', price: '¥680/套' },
-    { name: '台球灯', specs: 'LED专业照明', price: '¥1,200' },
-    { name: '球杆架', specs: '实木材质，可放16支', price: '¥380' }
+    { name: '台球灯', specs: 'LED专业照明', price: '¥1,200' }
   ],
-  '维护用品': [
-    { name: '台呢刷套装', specs: '专业清洁工具', price: '¥120' },
-    { name: '巧克粉', specs: '防滑增摩', price: '¥30/盒' },
-    { name: '杆油保养套装', specs: '延长球杆寿命', price: '¥180' },
-    { name: '台球清洁剂', specs: '专业配方', price: '¥60' }
+  '定制服务': [
+    { name: '台球厅整体设计', specs: '专业设计师团队，一站式解决方案', price: '根据项目报价' },
+    { name: '个性化台球桌定制', specs: '尺寸、颜色、材质均可定制', price: '¥38,000起' },
+    { name: '品牌LOGO定制', specs: '台呢、球杆、配件个性化定制', price: '¥2,000起' },
+    { name: '会员系统定制', specs: '智能化管理，提升运营效率', price: '¥15,000起' }
   ]
 };
 
+// 路由路径到分类的映射
+const pathToCategoryMap: Record<string, string> = {
+  '/products/tables': '台球桌',
+  '/products/accessories': '球杆配件',
+  '/products/custom': '定制服务'
+};
+
 export const ProductsPage: React.FC = () => {
+  const location = useLocation();
   const { trackClick, engagementLevel } = useBehaviorTracking();
   const { state, dispatch } = useContextEngine();
   const [productsInfo, setProductsInfo] = useState<ProductsInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('台球桌');
+  
+  // 根据路由路径设置默认分类
+  const getDefaultCategory = () => {
+    return pathToCategoryMap[location.pathname] || '台球桌';
+  };
+  
+  const [selectedCategory, setSelectedCategory] = useState<string>(getDefaultCategory());
+  
+  // 产品咨询表单状态
+  const [inquiryFormData, setInquiryFormData] = useState<ProductInquiryFormData>({
+    name: '',
+    phone: '',
+    product: '',
+    quantity: 1,
+    message: ''
+  });
+  const [inquirySubmitting, setInquirySubmitting] = useState(false);
+  const [inquiryResult, setInquiryResult] = useState<ProductInquiry | null>(null);
+  const [showInquiryResult, setShowInquiryResult] = useState(false);
+  const [searchPhone, setSearchPhone] = useState('');
+  const [searchResults, setSearchResults] = useState<ProductInquiry[]>([]);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+
+  // 监听路由变化，更新选中的分类
+  useEffect(() => {
+    const newCategory = pathToCategoryMap[location.pathname];
+    if (newCategory && newCategory !== selectedCategory) {
+      setSelectedCategory(newCategory);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     // 更新用户兴趣
@@ -91,7 +125,7 @@ export const ProductsPage: React.FC = () => {
             { name: '鑫隆基', description: '高性价比' },
             { name: '申天堂', description: '家用入门' }
           ],
-          categories: ['台球桌', '球杆', '配件', '维护用品'],
+          categories: ['台球桌', '球杆配件', '定制服务'],
           features: ['自主生产', '品质保证', '专业认证', '售后服务']
         };
         
@@ -109,6 +143,53 @@ export const ProductsPage: React.FC = () => {
     }
   };
 
+  // 处理产品咨询表单提交
+  const handleInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      setInquirySubmitting(true);
+      const inquiry = await productInquiryService.submitInquiry(inquiryFormData);
+      
+      setInquiryResult(inquiry);
+      setShowInquiryResult(true);
+      
+      // 清空表单
+      setInquiryFormData({
+        name: '',
+        phone: '',
+        product: '',
+        quantity: 1,
+        message: ''
+      });
+      
+      trackClick('product-inquiry-submitted');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '提交失败，请稍后重试');
+    } finally {
+      setInquirySubmitting(false);
+    }
+  };
+  
+  // 处理查询申请记录
+  const handleSearchInquiries = async () => {
+    if (!searchPhone) {
+      alert('请输入手机号');
+      return;
+    }
+    
+    try {
+      const results = await productInquiryService.getInquiriesByPhone(searchPhone);
+      setSearchResults(results);
+      if (results.length === 0) {
+        alert('未找到相关记录');
+      }
+      trackClick('inquiry-search');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '查询失败，请稍后重试');
+    }
+  };
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -177,12 +258,32 @@ export const ProductsPage: React.FC = () => {
   return (
     <>
       <SEO
-        title="产品中心"
-        description="耶氏体育产品中心 - 西南地区唯一台球桌生产厂家。提供耶氏、古帮特、鑫隆基、申天堂四大品牌系列台球桌、球杆、配件及维护用品。专业生产、品质保证、售后无忧。"
-        keywords="台球桌,台球杖,台球配件,耶氏台球,古帮特,鑫隆基,申天堂,台球器材,台球设备"
+        title={location.pathname === '/products' ? '产品中心' : `${selectedCategory} - 产品中心`}
+        description={
+          selectedCategory === '台球桌' 
+            ? '耶氏体育专业台球桌 - 提供耶氏、古帮特、鑫隆基、申天堂四大品牌系列台球桌。国际标准尺寸，青石板台面，专业比赛级别。'
+            : selectedCategory === '球杆配件'
+            ? '耶氏体育球杆配件 - 专业球杆、台呢、水晶球、台球灯等全系列配件。进口材料，品质保证。'
+            : selectedCategory === '定制服务'
+            ? '耶氏体育定制服务 - 台球厅整体设计、个性化台球桌定制、品牌LOGO定制、会员系统定制等一站式解决方案。'
+            : '耶氏体育产品中心 - 西南地区唯一台球桌生产厂家。提供耶氏、古帮特、鑫隆基、申天堂四大品牌系列台球桌、球杆、配件及维护用品。专业生产、品质保证、售后无忧。'
+        }
+        keywords={
+          selectedCategory === '台球桌'
+            ? '台球桌,专业台球桌,比赛台球桌,耶氏台球桌,古帮特台球桌,鑫隆基台球桌,申天堂台球桌'
+            : selectedCategory === '球杆配件'
+            ? '台球杆,碳纤维球杆,台球配件,台呢,水晶球,台球灯,球杆架'
+            : selectedCategory === '定制服务'
+            ? '台球厅设计,台球桌定制,LOGO定制,会员系统,定制服务'
+            : '台球桌,台球杖,台球配件,耶氏台球,古帮特,鑫隆基,申天堂,台球器材,台球设备'
+        }
         jsonLd={generateBreadcrumbSchema([
           { name: '首页', url: '/' },
-          { name: '产品中心', url: '/products' }
+          { name: '产品中心', url: '/products' },
+          ...(location.pathname !== '/products' ? [{
+            name: selectedCategory,
+            url: location.pathname
+          }] : [])
         ])}
       />
       <div className="min-h-screen bg-neutral-50">
@@ -475,7 +576,7 @@ export const ProductsPage: React.FC = () => {
                 <Card
                   title={product.name}
                   description={product.specs}
-                  category={selectedCategory === '台球桌' ? '🎱' : selectedCategory === '球杆' ? '🎯' : '🔧'}
+                  category={selectedCategory === '台球桌' ? '🎱' : selectedCategory === '球杆配件' ? '🎯' : '🔧'}
                   action={{
                     label: '询价',
                     onClick: () => {
@@ -493,10 +594,10 @@ export const ProductsPage: React.FC = () => {
       </section>
 
       {/* Manufacturing Excellence */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white relative overflow-hidden">
+      <section className="py-20 bg-neutral-50 relative overflow-hidden">
         {/* Decorative background */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-0 w-80 h-80 bg-secondary-400 rounded-full blur-3xl" />
         </div>
 
@@ -507,8 +608,8 @@ export const ProductsPage: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">生产实力</h2>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 text-neutral-800">生产实力</h2>
+            <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
               西南地区唯一生产基地，现代化工厂保证品质
             </p>
           </motion.div>
@@ -519,8 +620,8 @@ export const ProductsPage: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-3xl font-semibold mb-6">专业制造，品质保证</h3>
-              <p className="text-lg mb-8 text-white/90 leading-relaxed">
+              <h3 className="text-3xl font-semibold mb-6 text-neutral-800">专业制造，品质保证</h3>
+              <p className="text-lg mb-8 text-neutral-600 leading-relaxed">
                 拥有现代化生产车间5000平方米，配备先进的数控加工设备，年产能超过3000台。
                 从原材料采购到成品出厂，每一个环节都严格把控，确保产品品质。
               </p>
@@ -533,7 +634,7 @@ export const ProductsPage: React.FC = () => {
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4">
                     <span className="text-3xl">{item.icon}</span>
-                    <span className="text-lg">{item.text}</span>
+                    <span className="text-lg text-neutral-700">{item.text}</span>
                   </div>
                 ))}
               </div>
@@ -551,9 +652,9 @@ export const ProductsPage: React.FC = () => {
                 { number: '10+', label: '专利技术' },
                 { number: '99%', label: '客户满意度' }
               ].map((stat, i) => (
-                <div key={i} className="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center">
-                  <div className="text-4xl font-bold mb-2">{stat.number}</div>
-                  <div className="text-white/80">{stat.label}</div>
+                <div key={i} className="bg-white shadow-lg rounded-xl p-6 text-center border border-neutral-200">
+                  <div className="text-4xl font-bold mb-2 text-primary-600">{stat.number}</div>
+                  <div className="text-neutral-600">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -571,64 +672,94 @@ export const ProductsPage: React.FC = () => {
             className="max-w-2xl mx-auto"
           >
             <div className="bg-white rounded-xl shadow-xl p-8">
-              <h2 className="text-3xl font-bold text-center mb-8">产品咨询</h2>
+              {/* 标题和查询按钮 */}
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl font-bold">产品咨询</h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowSearchModal(true)}
+                >
+                  查看申请记录
+                </Button>
+              </div>
 
-              <form className="space-y-6">
+              {/* 表单 */}
+              <form onSubmit={handleInquirySubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-neutral-700 mb-2">
-                      您的姓名
+                      您的姓名 <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
+                      required
                       className="input"
                       placeholder="请输入姓名"
+                      value={inquiryFormData.name}
+                      onChange={(e) => setInquiryFormData({...inquiryFormData, name: e.target.value})}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-neutral-700 mb-2">
-                      联系电话
+                      联系电话 <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="tel"
+                      required
+                      pattern="1[3-9]\d{9}"
                       className="input"
                       placeholder="请输入手机号"
+                      value={inquiryFormData.phone}
+                      onChange={(e) => setInquiryFormData({...inquiryFormData, phone: e.target.value})}
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 mb-2">
-                    咨询产品
+                    咨询产品 <span className="text-red-500">*</span>
                   </label>
-                  <select className="input">
-                    <option>请选择产品类型</option>
+                  <select 
+                    className="input"
+                    required
+                    value={inquiryFormData.product}
+                    onChange={(e) => setInquiryFormData({...inquiryFormData, product: e.target.value})}
+                  >
+                    <option value="">请选择产品类型</option>
                     <optgroup label="台球桌">
-                      <option>耶氏专业比赛台</option>
-                      <option>古帮特经典系列</option>
-                      <option>鑫隆基商用型</option>
-                      <option>申天堂入门款</option>
+                      <option value="耶氏专业比赛台">耶氏专业比赛台</option>
+                      <option value="古帮特经典系列">古帮特经典系列</option>
+                      <option value="鑫隆基商用型">鑫隆基商用型</option>
+                      <option value="申天堂入门款">申天堂入门款</option>
                     </optgroup>
-                    <optgroup label="球杆">
-                      <option>职业级碳纤维杆</option>
-                      <option>高级枫木杆</option>
+                    <optgroup label="球杆配件">
+                      <option value="职业级碳纤维杆">职业级碳纤维杆</option>
+                      <option value="进口台呢">进口台呢</option>
+                      <option value="水晶球套装">水晶球套装</option>
+                      <option value="台球灯及其他配件">台球灯及其他配件</option>
                     </optgroup>
-                    <optgroup label="配件">
-                      <option>台呢及配件</option>
-                      <option>其他耗材</option>
+                    <optgroup label="定制服务">
+                      <option value="台球厅整体设计">台球厅整体设计</option>
+                      <option value="个性化台球桌定制">个性化台球桌定制</option>
+                      <option value="品牌LOGO定制">品牌LOGO定制</option>
+                      <option value="会员系统定制">会员系统定制</option>
                     </optgroup>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 mb-2">
-                    采购数量
+                    采购数量 <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="number"
+                    required
                     className="input"
                     placeholder="请输入采购数量"
                     min="1"
+                    value={inquiryFormData.quantity}
+                    onChange={(e) => setInquiryFormData({...inquiryFormData, quantity: parseInt(e.target.value) || 1})}
                   />
                 </div>
 
@@ -640,19 +771,19 @@ export const ProductsPage: React.FC = () => {
                     rows={4}
                     className="input"
                     placeholder="请描述您的具体需求"
+                    value={inquiryFormData.message}
+                    onChange={(e) => setInquiryFormData({...inquiryFormData, message: e.target.value})}
                   />
                 </div>
 
                 <div className="text-center">
                   <Button
+                    type="submit"
                     variant="primary"
                     size="lg"
-                    onClick={() => {
-                      trackClick('product-inquiry-submit');
-                      alert('感谢您的咨询！我们会尽快与您联系并提供报价。');
-                    }}
+                    disabled={inquirySubmitting}
                   >
-                    提交咨询
+                    {inquirySubmitting ? '提交中...' : '提交咨询'}
                   </Button>
                 </div>
               </form>
@@ -665,6 +796,143 @@ export const ProductsPage: React.FC = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* 提交成功弹窗 */}
+      <AnimatePresence>
+        {showInquiryResult && inquiryResult && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+            onClick={() => setShowInquiryResult(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="text-center">
+                <div className="w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg className="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-2">咨询提交成功！</h3>
+                <p className="text-neutral-600 mb-6">
+                  我们已收到您的咨询，销售人员将在24小时内与您联系。
+                </p>
+                <div className="bg-neutral-50 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-neutral-600 mb-1">咨询编号</p>
+                  <p className="text-lg font-bold text-primary-600">{inquiryResult.id}</p>
+                  <p className="text-xs text-neutral-500 mt-2">请保存此编号以便查询进度</p>
+                </div>
+                <Button
+                  fullWidth
+                  onClick={() => setShowInquiryResult(false)}
+                >
+                  确定
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* 查询申请记录模态框 */}
+      <AnimatePresence>
+        {showSearchModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+            onClick={() => {
+              setShowSearchModal(false);
+              setSearchResults([]);
+              setSearchPhone('');
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl shadow-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-2xl font-bold mb-6">查看申请记录</h3>
+              
+              {/* 搜索表单 */}
+              <div className="flex gap-4 mb-6">
+                <input
+                  type="tel"
+                  className="input flex-1"
+                  placeholder="请输入手机号查询"
+                  value={searchPhone}
+                  onChange={(e) => setSearchPhone(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearchInquiries()}
+                />
+                <Button onClick={handleSearchInquiries}>
+                  查询
+                </Button>
+              </div>
+              
+              {/* 查询结果 */}
+              {searchResults.length > 0 ? (
+                <div className="space-y-4">
+                  {searchResults.map((inquiry) => (
+                    <div key={inquiry.id} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <p className="font-semibold">{inquiry.product}</p>
+                          <p className="text-sm text-neutral-600">数量：{inquiry.quantity}</p>
+                        </div>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          inquiry.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                          inquiry.status === 'processing' ? 'bg-blue-100 text-blue-700' :
+                          inquiry.status === 'contacted' ? 'bg-purple-100 text-purple-700' :
+                          'bg-green-100 text-green-700'
+                        }`}>
+                          {inquiry.status === 'pending' ? '待处理' :
+                           inquiry.status === 'processing' ? '处理中' :
+                           inquiry.status === 'contacted' ? '已联系' : '已完成'}
+                        </span>
+                      </div>
+                      <div className="text-sm text-neutral-500">
+                        <p>咨询编号：{inquiry.id}</p>
+                        <p>提交时间：{new Date(inquiry.submittedAt).toLocaleString()}</p>
+                        {inquiry.message && <p className="mt-2">留言：{inquiry.message}</p>}
+                        {inquiry.followUpNotes && (
+                          <p className="mt-2 text-primary-600">跟进备注：{inquiry.followUpNotes}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : searchPhone && (
+                <div className="text-center py-8 text-neutral-500">
+                  暂无查询结果
+                </div>
+              )}
+              
+              <div className="mt-6 flex justify-end">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowSearchModal(false);
+                    setSearchResults([]);
+                    setSearchPhone('');
+                  }}
+                >
+                  关闭
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Context指示器（开发模式） */}
       {process.env.NODE_ENV === 'development' && (

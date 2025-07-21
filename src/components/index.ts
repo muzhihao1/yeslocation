@@ -77,4 +77,5 @@ export { BookingForm } from './organisms/BookingForm';
 export { BookingFormOptimized } from './organisms/BookingFormOptimized';
 export { BookingConfirmation } from './organisms/BookingConfirmation';
 export { BookingModal } from './organisms/BookingModal';
+export { TrainingDetailsModal } from './organisms/TrainingDetailsModal';
 export { ChatWidget } from './organisms/ChatWidget';
