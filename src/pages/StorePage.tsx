@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextEngine } from '../context/ContextEngine';
 import { useBehaviorTracking } from '../hooks/useBehaviorTracking';
 import { Button, Card, BookingModal } from '../components';
 import { StoreCard } from '../components/molecules/StoreCard';
 import { api, Store, DataResponse, StoreStatistics } from '../services/api';
 
+// 路由路径到视图的映射
+const pathToViewMap: Record<string, string> = {
+  '/stores': 'map', // 默认显示门店分布
+  '/stores/map': 'map',
+  '/stores/flagship': 'flagship',
+  '/stores/appointment': 'appointment'
+};
+
 export const StorePage: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { trackClick, engagementLevel } = useBehaviorTracking();
   const { state, dispatch } = useContextEngine();
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -17,6 +28,9 @@ export const StorePage: React.FC = () => {
   const [selectedDistrict, setSelectedDistrict] = useState<string>('all');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
+  
+  // 根据路由路径确定当前视图
+  const currentView = pathToViewMap[location.pathname] || 'map';
   
   useEffect(() => {
     // 更新用户兴趣
@@ -72,18 +86,81 @@ export const StorePage: React.FC = () => {
   // 方案1：使用iframe嵌入现有地图页面
   return (
     <div className="min-h-screen pt-20 bg-gray-50">
-      {/* 页面标题 */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto px-4 py-8"
+      {/* Hero Section */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="relative bg-gradient-to-br from-primary-600 to-primary-500 text-white py-20"
       >
-        <h1 className="text-4xl font-bold text-yes-dark text-center mb-4">
-          门店分布
-        </h1>
-        <p className="text-xl text-center text-gray-600 mb-8">
-          20家门店遍布昆明，总有一家在您身边
-        </p>
+        <div className="container mx-auto px-4 text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl font-bold mb-6 text-white"
+          >
+            耶氏门店网络
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-2xl mb-8 max-w-3xl mx-auto text-white/90"
+          >
+            20家门店遍布昆明，总有一家在您身边
+          </motion.p>
+        </div>
+      </motion.section>
+
+      {/* Navigation Tabs */}
+      <section className="bg-white border-b">
+        <div className="container mx-auto px-4">
+          <nav className="flex space-x-8">
+            <button
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                currentView === 'map'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              onClick={() => {
+                navigate('/stores/map');
+                trackClick('stores-nav-map');
+              }}
+            >
+              门店分布
+            </button>
+            <button
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                currentView === 'flagship'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              onClick={() => {
+                navigate('/stores/flagship');
+                trackClick('stores-nav-flagship');
+              }}
+            >
+              旗舰店
+            </button>
+            <button
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                currentView === 'appointment'
+                  ? 'border-primary-500 text-primary-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              onClick={() => {
+                navigate('/stores/appointment');
+                trackClick('stores-nav-appointment');
+              }}
+            >
+              预约到店
+            </button>
+          </nav>
+        </div>
+      </section>
+
+      {/* Conditional Content Based on View */}
+      {currentView === 'map' ? (
+        <>
         
         {/* 快速统计 */}
         {loading ? (
@@ -199,7 +276,7 @@ export const StorePage: React.FC = () => {
         />
       </motion.div>
       
-      {/* 底部CTA */}
+      {/* 底部CTA - 仅在map视图显示 */}
       <div className="bg-white py-12 mt-8">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl font-bold text-yes-dark mb-4">
@@ -250,6 +327,264 @@ export const StorePage: React.FC = () => {
           </div>
         </div>
       )}
+        </>
+      ) : currentView === 'flagship' ? (
+        /* 旗舰店展示 */
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-yes-dark text-center mb-12">
+              耶氏旗舰店
+            </h2>
+            
+            {/* 旗舰店特色 */}
+            <div className="max-w-4xl mx-auto mb-12">
+              <div className="bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-2xl p-8 shadow-xl">
+                <h3 className="text-2xl font-bold mb-4">昆明市中心旗舰店</h3>
+                <p className="text-lg mb-6">
+                  位于昆明市五华区青年路中心商圈，是耶氏台球品牌形象展示中心
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-xl font-semibold mb-3">旗舰店特色</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        3000平米超大空间
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        32张国际标准比赛台
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        VIP包房服务
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        专业教练驻场指导
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold mb-3">配套服务</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        高端餐饮服务
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        赛事直播观看区
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        会员专属休息区
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <span className="text-yellow-300">✓</span>
+                        地下停车场
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* 旗舰店图片展示 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-white rounded-lg shadow-lg overflow-hidden"
+              >
+                <div className="h-48 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                  <span className="text-white text-4xl">🎱</span>
+                </div>
+                <div className="p-4">
+                  <h4 className="font-semibold text-lg mb-2">豪华大厅</h4>
+                  <p className="text-gray-600 text-sm">宽敞明亮的比赛大厅，国际标准照明</p>
+                </div>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-white rounded-lg shadow-lg overflow-hidden"
+              >
+                <div className="h-48 bg-gradient-to-br from-secondary-400 to-secondary-600 flex items-center justify-center">
+                  <span className="text-white text-4xl">🏆</span>
+                </div>
+                <div className="p-4">
+                  <h4 className="font-semibold text-lg mb-2">VIP包房</h4>
+                  <p className="text-gray-600 text-sm">私密专属空间，享受尊贵服务</p>
+                </div>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="bg-white rounded-lg shadow-lg overflow-hidden"
+              >
+                <div className="h-48 bg-gradient-to-br from-neutral-600 to-neutral-800 flex items-center justify-center">
+                  <span className="text-white text-4xl">☕</span>
+                </div>
+                <div className="p-4">
+                  <h4 className="font-semibold text-lg mb-2">休闲餐饮</h4>
+                  <p className="text-gray-600 text-sm">精品咖啡与美食，完美的休憩体验</p>
+                </div>
+              </motion.div>
+            </div>
+            
+            {/* 联系信息 */}
+            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+              <h3 className="text-xl font-bold text-yes-dark mb-6 text-center">旗舰店信息</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">📍</span>
+                  <div>
+                    <p className="font-semibold">地址</p>
+                    <p className="text-gray-600">昆明市五华区青年路388号昆明走廊3楼</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">📞</span>
+                  <div>
+                    <p className="font-semibold">电话</p>
+                    <p className="text-gray-600">0871-65511888</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">⏰</span>
+                  <div>
+                    <p className="font-semibold">营业时间</p>
+                    <p className="text-gray-600">10:00 - 凌晨 02:00</p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 text-center">
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    setSelectedStore(stores.find(s => s.name.includes('旗舰')) || stores[0]);
+                    setBookingModalOpen(true);
+                    trackClick('flagship-booking');
+                  }}
+                >
+                  预约到店
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : currentView === 'appointment' ? (
+        /* 预约到店 */
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-yes-dark text-center mb-12">
+              预约到店
+            </h2>
+            
+            {/* 预约优势 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="text-center"
+              >
+                <div className="text-5xl mb-4">⏰</div>
+                <h3 className="text-xl font-semibold text-yes-dark mb-2">优先安排</h3>
+                <p className="text-gray-600">预约客户优先安排台位，无需等待</p>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="text-center"
+              >
+                <div className="text-5xl mb-4">🎁</div>
+                <h3 className="text-xl font-semibold text-yes-dark mb-2">专属优惠</h3>
+                <p className="text-gray-600">预约到店享受会员价格优惠</p>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="text-center"
+              >
+                <div className="text-5xl mb-4">👨‍🏫</div>
+                <h3 className="text-xl font-semibold text-yes-dark mb-2">教练服务</h3>
+                <p className="text-gray-600">可提前预约专业教练指导</p>
+              </motion.div>
+            </div>
+            
+            {/* 门店列表 - 用于预约 */}
+            {loading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yes-green mx-auto"></div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                {stores.slice(0, 6).map((store) => (
+                  <motion.div
+                    key={store.id}
+                    whileHover={{ scale: 1.03 }}
+                    className="bg-white rounded-lg shadow-lg p-6"
+                  >
+                    <h3 className="text-lg font-bold text-yes-dark mb-2">{store.name}</h3>
+                    <div className="space-y-2 mb-4">
+                      <p className="text-sm text-gray-600 flex items-start gap-2">
+                        <span>📍</span>
+                        <span>{store.address}</span>
+                      </p>
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <span>📞</span>
+                        <span>{store.phone}</span>
+                      </p>
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <span>⏰</span>
+                        <span>{store.businessHours}</span>
+                      </p>
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <span>🎱</span>
+                        <span>{store.tableCount || 8}张台球桌</span>
+                      </p>
+                    </div>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => {
+                        setSelectedStore(store);
+                        setBookingModalOpen(true);
+                        trackClick(`appointment-store-${store.id}`);
+                      }}
+                    >
+                      立即预约
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+            
+            {/* 预约说明 */}
+            <div className="max-w-2xl mx-auto mt-12 bg-gray-50 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-yes-dark mb-4">预约说明</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-start gap-2">
+                  <span className="text-yes-green">•</span>
+                  <span>预约时间：提前1-3天预约，确保台位充足</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-yes-green">•</span>
+                  <span>取消政策：如需取消，请提前2小时通知门店</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-yes-green">•</span>
+                  <span>会员权益：会员预约可享受专属台位和折扣优惠</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-yes-green">•</span>
+                  <span>团体预约：5人以上团体请电话联系门店安排</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      ) : null}
       
       {/* Context指示器（开发模式） */}
       {process.env.NODE_ENV === 'development' && (
@@ -259,6 +594,7 @@ export const StorePage: React.FC = () => {
           <p>门店总数：{statistics?.totalStores || 0}</p>
           <p>选中区域：{selectedDistrict}</p>
           <p>API状态：{loading ? '加载中' : error ? '错误' : '正常'}</p>
+          <p>当前视图：{currentView}</p>
         </div>
       )}
       

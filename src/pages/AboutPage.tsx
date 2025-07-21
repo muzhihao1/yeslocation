@@ -180,19 +180,6 @@ export const AboutPage: React.FC = () => {
             </motion.p>
           </motion.div>
 
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          >
-            <div className="animate-bounce">
-              <svg className="w-6 h-6 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -247,24 +234,24 @@ export const AboutPage: React.FC = () => {
       <section className="py-20 bg-neutral-50">
         <div className="container mx-auto px-4">
           {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <div className="flex flex-wrap justify-center gap-6 mb-16">
             {sectionTabs.map((tab) => (
               <motion.button
                 key={tab.id}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => {
                   setActiveSection(tab.id);
                   trackClick(`about-tab-${tab.id}`);
                 }}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                className={`flex items-center gap-3 px-8 py-4 rounded-2xl font-medium transition-all duration-300 ${
                   activeSection === tab.id
-                    ? 'bg-primary-500 text-white shadow-xl shadow-primary-500/25'
-                    : 'bg-white text-neutral-700 hover:bg-neutral-100 shadow-md'
+                    ? 'bg-primary-500 text-white shadow-lg scale-105'
+                    : 'bg-white text-neutral-600 hover:bg-neutral-50 shadow-sm border border-neutral-200'
                 }`}
               >
-                <span className="text-xl">{tab.icon}</span>
-                <span>{tab.label}</span>
+                <span className="text-2xl">{tab.icon}</span>
+                <span className="text-lg">{tab.label}</span>
               </motion.button>
             ))}
           </div>
@@ -277,29 +264,29 @@ export const AboutPage: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="max-w-4xl mx-auto"
           >
-            <div className="bg-white rounded-xl shadow-xl p-8">
+            <div className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-10">
               {activeSection === 'history' && (
                 <div>
-                  <h2 className="text-3xl font-bold text-yes-dark mb-6">发展历程</h2>
-                  <p className="text-gray-700 leading-relaxed text-lg">
+                  <h2 className="text-4xl font-bold text-neutral-800 mb-8">发展历程</h2>
+                  <p className="text-neutral-600 leading-loose text-lg">
                     {companyInfo.sections.history}
                   </p>
-                  <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div className="bg-gray-50 p-4 rounded">
-                      <div className="text-2xl font-bold text-yes-green">2018</div>
-                      <div className="text-sm text-gray-600">创立年份</div>
+                  <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-6 rounded-xl">
+                      <div className="text-4xl font-bold text-primary-600 mb-2">2018</div>
+                      <div className="text-base text-neutral-700 font-medium">创立年份</div>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded">
-                      <div className="text-2xl font-bold text-yes-green">20+</div>
-                      <div className="text-sm text-gray-600">连锁门店</div>
+                    <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-6 rounded-xl">
+                      <div className="text-4xl font-bold text-primary-600 mb-2">20+</div>
+                      <div className="text-base text-neutral-700 font-medium">连锁门店</div>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded">
-                      <div className="text-2xl font-bold text-yes-green">100+</div>
-                      <div className="text-sm text-gray-600">员工数量</div>
+                    <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-6 rounded-xl">
+                      <div className="text-4xl font-bold text-primary-600 mb-2">100+</div>
+                      <div className="text-base text-neutral-700 font-medium">员工数量</div>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded">
-                      <div className="text-2xl font-bold text-yes-green">4</div>
-                      <div className="text-sm text-gray-600">自有品牌</div>
+                    <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-6 rounded-xl">
+                      <div className="text-4xl font-bold text-primary-600 mb-2">4</div>
+                      <div className="text-base text-neutral-700 font-medium">自有品牌</div>
                     </div>
                   </div>
                 </div>
@@ -307,28 +294,28 @@ export const AboutPage: React.FC = () => {
 
               {activeSection === 'mission' && (
                 <div>
-                  <h2 className="text-3xl font-bold text-yes-dark mb-6">企业使命</h2>
-                  <p className="text-xl text-gray-700 leading-relaxed mb-8">
+                  <h2 className="text-4xl font-bold text-neutral-800 mb-8">企业使命</h2>
+                  <p className="text-xl text-neutral-600 leading-loose mb-10">
                     {companyInfo.sections.mission}
                   </p>
-                  <div className="bg-yes-green bg-opacity-10 p-6 rounded-lg">
-                    <h3 className="text-xl font-semibold text-yes-dark mb-4">我们的承诺</h3>
-                    <ul className="space-y-3">
-                      <li className="flex items-start gap-3">
-                        <span className="text-yes-green mt-1">✓</span>
-                        <span className="text-gray-700">提供专业级别的台球设备和场地</span>
+                  <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-8 rounded-xl">
+                    <h3 className="text-2xl font-semibold text-neutral-800 mb-6">我们的承诺</h3>
+                    <ul className="space-y-4">
+                      <li className="flex items-start gap-4">
+                        <span className="text-primary-600 text-xl mt-0.5">✓</span>
+                        <span className="text-neutral-700 text-lg">提供专业级别的台球设备和场地</span>
                       </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-yes-green mt-1">✓</span>
-                        <span className="text-gray-700">打造舒适、现代的台球运动环境</span>
+                      <li className="flex items-start gap-4">
+                        <span className="text-primary-600 text-xl mt-0.5">✓</span>
+                        <span className="text-neutral-700 text-lg">打造舒适、现代的台球运动环境</span>
                       </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-yes-green mt-1">✓</span>
-                        <span className="text-gray-700">培养专业台球人才，推广台球文化</span>
+                      <li className="flex items-start gap-4">
+                        <span className="text-primary-600 text-xl mt-0.5">✓</span>
+                        <span className="text-neutral-700 text-lg">培养专业台球人才，推广台球文化</span>
                       </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-yes-green mt-1">✓</span>
-                        <span className="text-gray-700">让每个人都能享受台球运动的乐趣</span>
+                      <li className="flex items-start gap-4">
+                        <span className="text-primary-600 text-xl mt-0.5">✓</span>
+                        <span className="text-neutral-700 text-lg">让每个人都能享受台球运动的乐趣</span>
                       </li>
                     </ul>
                   </div>
@@ -337,13 +324,13 @@ export const AboutPage: React.FC = () => {
 
               {activeSection === 'values' && (
                 <div>
-                  <h2 className="text-3xl font-bold text-yes-dark mb-6">核心价值</h2>
-                  <p className="text-lg text-gray-700 mb-8">{companyInfo.sections.values}</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <h2 className="text-4xl font-bold text-neutral-800 mb-8">核心价值</h2>
+                  <p className="text-lg text-neutral-600 mb-10">{companyInfo.sections.values}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {['专业', '品质', '服务', '创新'].map((value, index) => (
-                      <div key={value} className="border-l-4 border-yes-green pl-6">
-                        <h3 className="text-xl font-semibold text-yes-dark mb-2">{value}</h3>
-                        <p className="text-gray-600">
+                      <div key={value} className="border-l-4 border-primary-500 pl-6">
+                        <h3 className="text-2xl font-semibold text-neutral-800 mb-3">{value}</h3>
+                        <p className="text-neutral-600 text-lg">
                           {[
                             '专业的设备、专业的服务、专业的培训体系',
                             '高品质的台球桌、高品质的环境、高品质的体验',
@@ -359,29 +346,29 @@ export const AboutPage: React.FC = () => {
 
               {activeSection === 'team' && (
                 <div>
-                  <h2 className="text-3xl font-bold text-yes-dark mb-6">团队介绍</h2>
-                  <div className="bg-gradient-to-r from-yes-green to-yes-dark text-white p-8 rounded-lg mb-8">
+                  <h2 className="text-4xl font-bold text-neutral-800 mb-8">团队介绍</h2>
+                  <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white p-8 rounded-xl mb-10">
                     <h3 className="text-2xl font-semibold mb-4">创始人：{companyInfo.sections.team.founder}</h3>
                     <p className="text-lg italic mb-4">"{companyInfo.sections.team.philosophy}"</p>
                     <p className="opacity-90">
                       带领团队从第一家店开始，逆市扩张，将耶氏打造成为西南地区最具影响力的台球连锁品牌。
                     </p>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="text-center">
-                      <div className="text-4xl mb-4">👔</div>
-                      <h4 className="font-semibold text-yes-dark mb-2">管理团队</h4>
-                      <p className="text-gray-600">经验丰富的管理团队，确保高效运营</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="text-center p-6 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-xl">
+                      <div className="text-5xl mb-4">👔</div>
+                      <h4 className="text-xl font-semibold text-neutral-800 mb-3">管理团队</h4>
+                      <p className="text-neutral-600 text-lg">经验丰富的管理团队，确保高效运营</p>
                     </div>
-                    <div className="text-center">
-                      <div className="text-4xl mb-4">🔧</div>
-                      <h4 className="font-semibold text-yes-dark mb-2">技术团队</h4>
-                      <p className="text-gray-600">专业的安装维护团队，保障设备品质</p>
+                    <div className="text-center p-6 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-xl">
+                      <div className="text-5xl mb-4">🔧</div>
+                      <h4 className="text-xl font-semibold text-neutral-800 mb-3">技术团队</h4>
+                      <p className="text-neutral-600 text-lg">专业的安装维护团队，保障设备品质</p>
                     </div>
-                    <div className="text-center">
-                      <div className="text-4xl mb-4">🎓</div>
-                      <h4 className="font-semibold text-yes-dark mb-2">培训团队</h4>
-                      <p className="text-gray-600">资深教练团队，传授专业技能</p>
+                    <div className="text-center p-6 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-xl">
+                      <div className="text-5xl mb-4">🎓</div>
+                      <h4 className="text-xl font-semibold text-neutral-800 mb-3">培训团队</h4>
+                      <p className="text-neutral-600 text-lg">资深教练团队，传授专业技能</p>
                     </div>
                   </div>
                 </div>
@@ -392,11 +379,11 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-secondary-500 via-secondary-400 to-primary-500 text-white relative overflow-hidden">
         {/* Decorative background */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary-400 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary-400 rounded-full blur-3xl" />
         </div>
         
         <div className="container relative z-10 text-center">
@@ -404,7 +391,7 @@ export const AboutPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-display font-bold mb-6"
+            className="text-4xl md:text-5xl font-display font-bold mb-6 text-white"
           >
             加入耶氏，共创辉煌
           </motion.h2>
@@ -413,7 +400,7 @@ export const AboutPage: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl mb-8 max-w-2xl mx-auto text-white/90">
+            className="text-xl mb-8 max-w-2xl mx-auto text-white/95">
             无论您是想要加盟创业，还是希望提升台球技能，耶氏都是您的最佳选择
           </motion.p>
           <motion.div 
@@ -424,13 +411,13 @@ export const AboutPage: React.FC = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Button
-              variant="secondary"
+              variant="primary"
               size="lg"
               onClick={() => {
                 trackClick('about-franchise-cta');
                 window.location.href = '/franchise';
               }}
-              className="shadow-xl hover:shadow-2xl"
+              className="bg-white text-primary-600 hover:bg-neutral-100 shadow-xl hover:shadow-2xl"
             >
               了解加盟详情
             </Button>
@@ -441,7 +428,7 @@ export const AboutPage: React.FC = () => {
                 trackClick('about-training-cta');
                 window.location.href = '/training';
               }}
-              className="border-white text-white hover:bg-white hover:text-primary-600"
+              className="border-white text-white hover:bg-white/20 backdrop-blur-sm"
             >
               查看培训课程
             </Button>

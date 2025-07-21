@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>耶氏台球门店地图</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .store-popup {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .store-popup h3 {
+            margin: 0 0 8px 0;
+            color: #2e7d32;
+            font-size: 16px;
+        }
+        .store-popup p {
+            margin: 4px 0;
+            color: #666;
+        }
+        .store-popup .phone {
+            color: #1976d2;
+            font-weight: bold;
+        }
+        .custom-marker {
+            background-color: #2e7d32;
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <script>
+        // 门店数据
+        const stores = [
+            // 呈贡区
+            { id: 1, name: '耶氏台球(大学城店)', district: '呈贡区', address: '云南省昆明市呈贡区大学城聚贤街768号', phone: '177-8714-7147', coordinates: [24.8736, 102.8471], businessHours: '09:00-22:00' },
+            { id: 2, name: '耶氏台球(春融街店)', district: '呈贡区', address: '云南省昆明市呈贡区春融街地铁站D出口', phone: '177-8714-7147', coordinates: [24.8802, 102.8547], businessHours: '09:00-22:00' },
+            { id: 3, name: '耶氏台球(雨花店)', district: '呈贡区', address: '云南省昆明市呈贡区雨花路', phone: '177-8714-7147', coordinates: [24.8695, 102.8392], businessHours: '09:00-22:00' },
+            { id: 4, name: '耶氏台球(彩云南路店)', district: '呈贡区', address: '云南省昆明市呈贡区彩云南路', phone: '177-8714-7147', coordinates: [24.8678, 102.8513], businessHours: '09:00-22:00' },
+            { id: 5, name: '耶氏台球(吴家营店)', district: '呈贡区', address: '云南省昆明市呈贡区吴家营地铁站', phone: '177-8714-7147', coordinates: [24.8745, 102.8601], businessHours: '09:00-22:00' },
+            { id: 6, name: '耶氏台球(呈贡广场店)', district: '呈贡区', address: '云南省昆明市呈贡区呈贡广场', phone: '177-8714-7147', coordinates: [24.8721, 102.8456], businessHours: '09:00-22:00' },
+            
+            // 五华区
+            { id: 7, name: '耶氏台球(翠湖店)', district: '五华区', address: '云南省昆明市五华区翠湖公园附近', phone: '177-8714-7147', coordinates: [25.0502, 102.7035], businessHours: '09:00-22:00' },
+            { id: 8, name: '耶氏台球(南屏街店)', district: '五华区', address: '云南省昆明市五华区南屏街', phone: '177-8714-7147', coordinates: [25.0421, 102.7108], businessHours: '09:00-23:00' },
+            { id: 9, name: '耶氏台球(小西门店)', district: '五华区', address: '云南省昆明市五华区小西门', phone: '177-8714-7147', coordinates: [25.0438, 102.6978], businessHours: '09:00-22:00' },
+            { id: 10, name: '耶氏台球(一二一大街店)', district: '五华区', address: '云南省昆明市五华区一二一大街', phone: '177-8714-7147', coordinates: [25.0589, 102.7021], businessHours: '09:00-22:00' },
+            { id: 11, name: '耶氏台球(龙泉路店)', district: '五华区', address: '云南省昆明市五华区龙泉路', phone: '177-8714-7147', coordinates: [25.0612, 102.7156], businessHours: '09:00-22:00' },
+            { id: 12, name: '耶氏台球(丰宁店)', district: '五华区', address: '云南省昆明市五华区丰宁小区', phone: '177-8714-7147', coordinates: [25.0567, 102.6892], businessHours: '09:00-22:00' },
+            
+            // 官渡区
+            { id: 13, name: '耶氏台球(关上店)', district: '官渡区', address: '云南省昆明市官渡区关上中路', phone: '177-8714-7147', coordinates: [25.0187, 102.7389], businessHours: '09:00-22:00' },
+            { id: 14, name: '耶氏台球(世纪城店)', district: '官渡区', address: '云南省昆明市官渡区世纪城', phone: '177-8714-7147', coordinates: [24.9876, 102.7621], businessHours: '09:00-23:00' },
+            
+            // 盘龙区
+            { id: 15, name: '耶氏台球(北京路店)', district: '盘龙区', address: '云南省昆明市盘龙区北京路', phone: '177-8714-7147', coordinates: [25.0678, 102.7234], businessHours: '09:00-22:00' },
+            { id: 16, name: '耶氏台球(白塔路店)', district: '盘龙区', address: '云南省昆明市盘龙区白塔路', phone: '177-8714-7147', coordinates: [25.0723, 102.7312], businessHours: '09:00-22:00' },
+            
+            // 晋宁区
+            { id: 17, name: '耶氏台球(晋宁店)', district: '晋宁区', address: '云南省昆明市晋宁区昆阳街道', phone: '177-8714-7147', coordinates: [24.6697, 102.5952], businessHours: '09:00-22:00' },
+            { id: 18, name: '耶氏台球(郑和路店)', district: '晋宁区', address: '云南省昆明市晋宁区郑和路', phone: '177-8714-7147', coordinates: [24.6612, 102.5876], businessHours: '09:00-22:00' },
+            { id: 19, name: '耶氏台球(晋城店)', district: '晋宁区', address: '云南省昆明市晋宁区晋城镇', phone: '177-8714-7147', coordinates: [24.6789, 102.6023], businessHours: '09:00-22:00' },
+            
+            // 澄江市
+            { id: 20, name: '耶氏台球(澄江店)', district: '澄江市', address: '云南省玉溪市澄江市凤麓街道', phone: '177-8714-7147', coordinates: [24.6756, 102.9084], businessHours: '09:00-22:00' }
+        ];
+
+        // 初始化地图
+        const map = L.map('map').setView([25.0329, 102.7055], 11);
+
+        // 添加地图瓦片层
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // 自定义图标
+        const greenIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background-color: #2e7d32; width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px;">🎱</div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+            popupAnchor: [0, -15]
+        });
+
+        // 添加标记
+        stores.forEach(store => {
+            const marker = L.marker(store.coordinates, { icon: greenIcon }).addTo(map);
+            
+            // 弹出窗口内容
+            const popupContent = `
+                <div class="store-popup">
+                    <h3>${store.name}</h3>
+                    <p><strong>地址：</strong>${store.address}</p>
+                    <p><strong>电话：</strong><span class="phone">${store.phone}</span></p>
+                    <p><strong>营业时间：</strong>${store.businessHours}</p>
+                    <p><strong>所属区域：</strong>${store.district}</p>
+                </div>
+            `;
+            
+            marker.bindPopup(popupContent);
+        });
+
+        // 根据区域分组
+        const districtGroups = {};
+        stores.forEach(store => {
+            if (!districtGroups[store.district]) {
+                districtGroups[store.district] = [];
+            }
+            districtGroups[store.district].push(store.coordinates);
+        });
+
+        // 适应所有标记
+        const allCoordinates = stores.map(store => store.coordinates);
+        if (allCoordinates.length > 0) {
+            const bounds = L.latLngBounds(allCoordinates);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+
+        // 监听父窗口消息
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'filterDistrict') {
+                const district = event.data.district;
+                if (district === 'all') {
+                    const bounds = L.latLngBounds(allCoordinates);
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                } else if (districtGroups[district]) {
+                    const bounds = L.latLngBounds(districtGroups[district]);
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
