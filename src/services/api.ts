@@ -363,27 +363,31 @@ class TrainingService implements TrainingDataService {
     }
     
     const schedules = programs
-      .filter(p => p.schedule && p.schedule.length > 0)
-      .map(program => ({
-        program,
-        sessions: program.schedule!
-          .filter(session => {
-            if (options?.startDate && new Date(session.date) < new Date(options.startDate)) {
-              return false;
-            }
-            if (options?.endDate && new Date(session.date) > new Date(options.endDate)) {
-              return false;
-            }
-            if (options?.location && !session.location.includes(options.location)) {
-              return false;
-            }
-            return true;
-          })
-          .map(session => ({
-            ...session,
-            availableSeats: 20 // Default available seats
-          }))
-      }))
+      .filter(p => p.schedule && Array.isArray(p.schedule) && p.schedule.length > 0)
+      .map(program => {
+        // Type guard to ensure schedule is an array
+        const scheduleArray = program.schedule as Array<{ date: string; time: string; location: string }>;
+        return {
+          program,
+          sessions: scheduleArray
+            .filter(session => {
+              if (options?.startDate && new Date(session.date) < new Date(options.startDate)) {
+                return false;
+              }
+              if (options?.endDate && new Date(session.date) > new Date(options.endDate)) {
+                return false;
+              }
+              if (options?.location && !session.location.includes(options.location)) {
+                return false;
+              }
+              return true;
+            })
+            .map(session => ({
+              ...session,
+              availableSeats: 20 // Default available seats
+            }))
+        };
+      })
       .filter(item => item.sessions.length > 0);
     
     return {
