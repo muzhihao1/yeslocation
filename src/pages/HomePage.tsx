@@ -130,7 +130,7 @@ export const HomePage: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto"
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 text-white">
               {cmsContent[CMSKeys.HOME_HERO_TITLE] || '专业台球 始于热爱'}
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-white/90 font-light">
@@ -161,7 +161,7 @@ export const HomePage: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+            className="absolute bottom-24 left-1/2 transform -translate-x-1/2"
           >
             <div className="animate-bounce">
               <svg className="w-6 h-6 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -359,8 +359,8 @@ export const HomePage: React.FC = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
           >
             {[
-              { number: '10+', label: '连锁门店' },
-              { number: '5000+', label: '满意客户' },
+              { number: '20+', label: '连锁门店' },
+              { number: '70000+', label: '会员' },
               { number: '50+', label: '专业教练' },
               { number: '15年', label: '行业经验' },
             ].map((stat, index) => (

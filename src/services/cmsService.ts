@@ -28,7 +28,7 @@ class CMSService {
       id: 'home_hero_subtitle',
       key: CMSKeys.HOME_HERO_SUBTITLE,
       type: 'text',
-      value: '20年匠心工艺 · 西南唯一台球设备制造商 · 一站式服务',
+      value: '20年匠心工艺 • 西南唯一台球设备制造商 • 一站式服务',
       label: '首页副标题',
       category: 'home',
       updatedAt: new Date(),

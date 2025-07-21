@@ -30,7 +30,7 @@ export const Logo: React.FC<LogoProps> = ({
       <motion.img 
         src="/yes-logo.png"
         alt="耶氏体育 Logo"
-        className="object-contain"
+        className="object-contain bg-transparent"
         style={{ width: icon, height: icon }}
         whileHover={{ rotate: 10 }}
         transition={{ type: "spring", stiffness: 400 }}

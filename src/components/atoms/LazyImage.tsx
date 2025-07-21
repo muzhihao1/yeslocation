@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useImageLazyLoad } from '../../hooks/useImageLazyLoad';
+import { createSVGPlaceholder } from '../../utils/placeholderImage';
 
 interface LazyImageProps {
   src: string;
@@ -9,6 +10,7 @@ interface LazyImageProps {
   width?: number;
   height?: number;
   placeholderColor?: string;
+  category?: string;
 }
 
 export const LazyImage: React.FC<LazyImageProps> = ({ 
@@ -17,14 +19,21 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   className = '', 
   width, 
   height,
-  placeholderColor = 'bg-neutral-200'
+  placeholderColor = 'bg-neutral-200',
+  category
 }) => {
   const { imgRef, isLoaded, isInView, setIsLoaded } = useImageLazyLoad();
+  const [hasError, setHasError] = useState(false);
+
+  const handleError = () => {
+    setHasError(true);
+    setIsLoaded(true);
+  };
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
       {/* 占位符 */}
-      {!isLoaded && (
+      {!isLoaded && !hasError && (
         <div 
           className={`absolute inset-0 ${placeholderColor}`}
         >
@@ -34,14 +43,15 @@ export const LazyImage: React.FC<LazyImageProps> = ({
         </div>
       )}
       
-      {/* 实际图片 */}
+      {/* 实际图片或错误占位符 */}
       <motion.img
         ref={imgRef}
-        src={isInView ? src : undefined}
+        src={hasError ? createSVGPlaceholder(category) : (isInView ? src : undefined)}
         alt={alt}
         width={width}
         height={height}
         onLoad={() => setIsLoaded(true)}
+        onError={handleError}
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 0.3 }}

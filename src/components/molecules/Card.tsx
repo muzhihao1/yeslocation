@@ -60,6 +60,7 @@ export const Card: React.FC<CardProps> = ({
               alt={title}
               className="w-full h-full"
               placeholderColor="bg-neutral-200"
+              category={category}
             />
           </div>
           

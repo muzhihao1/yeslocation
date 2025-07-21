@@ -27,7 +27,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ className = '' }) => {
       sender: 'bot',
       timestamp: new Date(),
       type: 'quick-reply',
-      quickReplies: ['查看门店', '预约场地', '培训课程', '产品咨询', '加盟合作'],
+      quickReplies: ['查看门店', '预约场地', '培训课程', '产品咨询', '加盟合作', '联系客服'],
     },
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -52,8 +52,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ className = '' }) => {
     
     // 关键词匹配
     if (lowerMessage.includes('门店') || lowerMessage.includes('地址')) {
-      replyText = '我们在昆明有10多家连锁门店，您想查看哪个区域的门店呢？';
-      quickReplies = ['五华区', '盘龙区', '官渡区', '西山区', '查看所有门店'];
+      replyText = '我们在昆明有20多家连锁门店，您想查看哪个区域的门店呢？\n\n我们的主要门店分布在：\n• 呈贡区：6家门店\n• 五华区：6家门店\n• 官渡区：2家门店\n• 盘龙区：2家门店\n• 晋宁区：3家门店';
+      quickReplies = ['呈贡区', '五华区', '官渡区', '盘龙区', '查看所有门店'];
     } else if (lowerMessage.includes('预约') || lowerMessage.includes('订场')) {
       replyText = '请问您想预约哪家门店？我可以帮您查看可用时段。';
       quickReplies = ['最近的门店', '旗舰店', '查看所有门店', '了解价格'];
@@ -61,16 +61,28 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ className = '' }) => {
       replyText = '我们提供专业的台球培训课程，包括：\n• 零基础入门班\n• 进阶技巧班\n• 一对一私教\n• 青少年培训班';
       quickReplies = ['查看课程详情', '预约体验课', '了解教练团队', '查看价格'];
     } else if (lowerMessage.includes('价格') || lowerMessage.includes('费用')) {
-      replyText = '我们的收费标准如下：\n• 散台：30-50元/小时\n• 包间：80-120元/小时\n• 培训课程：200-500元/课时\n具体价格因门店和时段而异。';
+      replyText = '我们的收费标准如下：\n• 散台：30-50元/小时\n• 包间：80-120元/小时\n• 培训课程：200-500元/课时\n• 会员卡：更优惠\n\n具体价格因门店和时段而异。详情请致电：4000089147';
       quickReplies = ['立即预约', '查看优惠活动', '会员价格'];
     } else if (lowerMessage.includes('加盟') || lowerMessage.includes('合作')) {
-      replyText = '感谢您对耶氏体育的关注！我们的加盟优势：\n• 15年品牌积淀\n• 完善的运营支持\n• 专业的培训体系\n• 灵活的合作模式';
+      replyText = '感谢您对耶氏体育的关注！我们的加盟优势：\n• 20年品牌积淀\n• 西南唯一台球设备制造商\n• 完善的运营支持\n• 专业的培训体系\n• 灵活的合作模式\n\n咨询热线：4000089147';
       quickReplies = ['了解加盟详情', '申请加盟', '联系招商经理'];
     } else if (lowerMessage.includes('你好') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
       replyText = '您好！很高兴为您服务，请问有什么可以帮助您的吗？';
       quickReplies = ['查看门店', '预约场地', '培训课程', '产品咨询'];
+    } else if (lowerMessage.includes('会员') || lowerMessage.includes('办卡')) {
+      replyText = '我们提供多种会员卡类型：\n• 普通会员：8折优惠\n• 黄金会员：7折优惠+优先预约\n• 钻石会员：6折优惠+专属服务\n• 企业会员：定制方案\n\n咨询热线：4000089147';
+      quickReplies = ['办理会员卡', '会员权益', '企业合作'];
+    } else if (lowerMessage.includes('联系') || lowerMessage.includes('电话') || lowerMessage.includes('客服')) {
+      replyText = '您可以通过以下方式联系我们：\n• 客服热线：4000089147\n• 工作时间：9:00-22:00\n• 微信公众号：耶氏体育\n• 邮箱：info@yes147.com';
+      quickReplies = ['拨打电话', '留下联系方式', '门店地址'];
+    } else if (lowerMessage.includes('产品') || lowerMessage.includes('台球桌') || lowerMessage.includes('球杆')) {
+      replyText = '我们是西南唯一的台球设备制造商，主要产品包括：\n• 专业台球桌：耶氏、古帮特、鑫隆基、申天堂\n• 球杆配件：元尘球杆系列\n• 定制服务：根据需求定制';
+      quickReplies = ['查看产品目录', '了解价格', '申请代理'];
+    } else if (lowerMessage.includes('优惠') || lowerMessage.includes('活动')) {
+      replyText = '当前优惠活动：\n• 新会员首次体验免费\n• 团体预订8折优惠\n• 学生凭证件7折\n• 生日当天免费打球\n\n更多优惠请咨询门店';
+      quickReplies = ['领取优惠券', '会员优惠', '门店活动'];
     } else {
-      replyText = '抱歉，我可能没有完全理解您的问题。您可以试试以下选项，或者直接致电我们的客服热线：0871-12345678';
+      replyText = '抱歉，我可能没有完全理解您的问题。您可以试试以下选项，或者直接致电我们的客服热线：4000089147';
       quickReplies = ['转人工客服', '查看常见问题', '留下联系方式'];
     }
     
@@ -284,7 +296,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ className = '' }) => {
                 </Button>
               </div>
               <p className="text-xs text-neutral-500 mt-2 text-center">
-                输入消息或点击快捷回复
+                输入消息或点击快捷回复 | 热线：4000089147
               </p>
             </form>
           </motion.div>

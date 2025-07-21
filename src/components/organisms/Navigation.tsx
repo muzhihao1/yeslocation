@@ -115,7 +115,7 @@ export const Navigation: React.FC = () => {
         <div className="container">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
-            <Link to="/" className="flex-shrink-0">
+            <Link to="/" className="flex-shrink-0 flex items-center">
               <Logo size="md" showText={true} />
             </Link>
 
@@ -196,7 +196,8 @@ export const Navigation: React.FC = () => {
 
             {/* CTA按钮 */}
             <div className="hidden lg:flex items-center space-x-3">
-              <motion.button
+              <motion.a
+                href="tel:4000089147"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center px-4 py-2.5 text-primary-600 font-medium rounded-lg border border-primary-200 hover:bg-primary-50 transition-all duration-200"
@@ -205,14 +206,7 @@ export const Navigation: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
                 咨询热线
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-2.5 bg-secondary-500 text-white font-medium rounded-lg shadow-sm hover:bg-secondary-600 hover:shadow-md transition-all duration-200"
-              >
-                免费体验
-              </motion.button>
+              </motion.a>
             </div>
 
             {/* 移动菜单按钮 */}
@@ -356,9 +350,9 @@ export const Navigation: React.FC = () => {
 
                 {/* 底部CTA */}
                 <div className="p-6 border-t border-neutral-100">
-                  <button className="w-full px-6 py-3 bg-secondary-500 text-white font-medium rounded-lg shadow-sm hover:bg-secondary-600 hover:shadow-md transition-all duration-200">
-                    免费体验
-                  </button>
+                  <a href="tel:4000089147" className="block w-full px-6 py-3 bg-secondary-500 text-white font-medium rounded-lg shadow-sm hover:bg-secondary-600 hover:shadow-md transition-all duration-200 text-center">
+                    咨询热线
+                  </a>
                 </div>
               </div>
             </motion.div>
