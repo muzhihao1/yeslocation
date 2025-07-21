@@ -55,7 +55,7 @@ class CMSService {
       id: 'home_value1_desc',
       key: CMSKeys.HOME_VALUE_PROP_1_DESC,
       type: 'richtext',
-      value: '西南唯一台球设备制造商，从源头保证品质',
+      value: '西南地区唯一台球设备制造商 从源头保证品质',
       label: '价值主张1描述',
       category: 'home',
       updatedAt: new Date(),

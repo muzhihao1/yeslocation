@@ -186,7 +186,7 @@ export const HomePage: React.FC = () => {
               {
                 icon: '🏆',
                 title: cmsContent[CMSKeys.HOME_VALUE_PROP_1_TITLE] || '20年匠心工艺',
-                description: cmsContent[CMSKeys.HOME_VALUE_PROP_1_DESC] || '西南唯一台球设备制造商',
+                description: cmsContent[CMSKeys.HOME_VALUE_PROP_1_DESC] || '西南地区唯一台球设备制造商',
               },
               {
                 icon: '🎯',
