@@ -208,7 +208,7 @@ export const TrainingPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50">
+    <div className="min-h-screen pt-16 md:pt-20 bg-gray-50">
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0 }}

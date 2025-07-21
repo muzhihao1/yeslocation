@@ -286,7 +286,7 @@ export const ProductsPage: React.FC = () => {
           }] : [])
         ])}
       />
-      <div className="min-h-screen bg-neutral-50">
+      <div className="min-h-screen bg-neutral-50 pt-16 md:pt-20">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         {/* Background with gradient */}

@@ -142,7 +142,7 @@ export const FranchisePage: React.FC = () => {
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="relative bg-gradient-to-br from-yes-green to-yes-dark text-white py-20"
+        className="relative bg-gradient-to-br from-primary-600 to-primary-500 text-white py-20"
       >
         <div className="container mx-auto px-4 text-center">
           <motion.h1
@@ -197,7 +197,7 @@ export const FranchisePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-gradient-to-br from-yes-green to-yes-dark text-white p-8 rounded-xl text-center"
+              className="bg-gradient-to-br from-primary-600 to-primary-500 text-white p-8 rounded-xl text-center"
             >
               <div className="text-5xl font-bold mb-2">{franchiseInfo.investment.initial}</div>
               <div className="text-xl mb-4">初始投资</div>
@@ -206,7 +206,7 @@ export const FranchisePage: React.FC = () => {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-gradient-to-br from-yes-dark to-yes-green text-white p-8 rounded-xl text-center"
+              className="bg-gradient-to-br from-primary-500 to-secondary-500 text-white p-8 rounded-xl text-center"
             >
               <div className="text-5xl font-bold mb-2">{franchiseInfo.investment.roi}</div>
               <div className="text-xl mb-4">回本周期</div>
@@ -215,7 +215,7 @@ export const FranchisePage: React.FC = () => {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-gradient-to-br from-yes-green to-yes-dark text-white p-8 rounded-xl text-center"
+              className="bg-gradient-to-br from-primary-600 to-primary-500 text-white p-8 rounded-xl text-center"
             >
               <div className="text-5xl font-bold mb-2">20+</div>
               <div className="text-xl mb-4">成功门店</div>
@@ -235,7 +235,7 @@ export const FranchisePage: React.FC = () => {
         <div className="container mx-auto px-4">
           <motion.h2
             variants={itemVariants}
-            className="text-3xl font-bold text-yes-dark text-center mb-12"
+            className="text-3xl font-bold text-neutral-800 text-center mb-12"
           >
             加盟优势
           </motion.h2>
@@ -247,7 +247,7 @@ export const FranchisePage: React.FC = () => {
                 variants={itemVariants}
                 className="flex items-start gap-4"
               >
-                <div className="flex-shrink-0 w-12 h-12 bg-yes-green text-white rounded-full flex items-center justify-center text-xl font-bold">
+                <div className="flex-shrink-0 w-12 h-12 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl font-bold">
                   {index + 1}
                 </div>
                 <div className="flex-1 p-6 bg-white rounded-lg shadow-lg hover:shadow-lg transition-shadow">
@@ -262,7 +262,7 @@ export const FranchisePage: React.FC = () => {
       {/* Process Steps */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-yes-dark text-center mb-12">
+          <h2 className="text-3xl font-bold text-neutral-800 text-center mb-12">
             加盟流程
           </h2>
 
@@ -278,7 +278,7 @@ export const FranchisePage: React.FC = () => {
                   }}
                   className={`flex items-center justify-center w-12 h-12 rounded-full font-bold transition-all ${
                     activeStep === step.step
-                      ? 'bg-yes-green text-white scale-110'
+                      ? 'bg-primary-500 text-white scale-110'
                       : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                   }`}
                 >
@@ -302,7 +302,7 @@ export const FranchisePage: React.FC = () => {
                   <div className="text-6xl mb-6">
                     {['📞', '🏢', '📝', '🏗️', '🎊'][step.step - 1]}
                   </div>
-                  <h3 className="text-2xl font-bold text-yes-dark mb-4">
+                  <h3 className="text-2xl font-bold text-neutral-800 mb-4">
                     第{step.step}步：{step.title}
                   </h3>
                   <p className="text-lg text-gray-700">{step.description}</p>
@@ -315,7 +315,7 @@ export const FranchisePage: React.FC = () => {
       {/* Support System */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-yes-dark text-center mb-12">
+          <h2 className="text-3xl font-bold text-neutral-800 text-center mb-12">
             全方位支持体系
           </h2>
 
@@ -337,7 +337,7 @@ export const FranchisePage: React.FC = () => {
       </section>
 
       {/* Success Stories */}
-      <section className="py-16 bg-gradient-to-r from-yes-dark to-yes-green text-white">
+      <section className="py-16 bg-gradient-to-r from-primary-600 to-secondary-500 text-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
             成功案例
@@ -368,7 +368,7 @@ export const FranchisePage: React.FC = () => {
       {/* FAQ Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-yes-dark text-center mb-12">
+          <h2 className="text-3xl font-bold text-neutral-800 text-center mb-12">
             常见问题
           </h2>
 
@@ -392,7 +392,7 @@ export const FranchisePage: React.FC = () => {
               }
             ].map((faq, index) => (
               <div key={index} className="p-6 bg-white rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold text-yes-dark mb-3">
+                <h3 className="text-xl font-semibold text-neutral-800 mb-3">
                   {faq.q}
                 </h3>
                 <p className="text-gray-700">{faq.a}</p>
@@ -418,7 +418,7 @@ export const FranchisePage: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="请输入姓名"
                   />
                 </div>
@@ -428,7 +428,7 @@ export const FranchisePage: React.FC = () => {
                   </label>
                   <input
                     type="tel"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yes-green focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="请输入手机号"
                   />
                 </div>
