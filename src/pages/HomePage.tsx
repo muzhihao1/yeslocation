@@ -156,19 +156,6 @@ export const HomePage: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* 滚动提示 */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="absolute bottom-24 left-1/2 transform -translate-x-1/2"
-          >
-            <div className="animate-bounce">
-              <svg className="w-6 h-6 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -198,18 +185,18 @@ export const HomePage: React.FC = () => {
             {[
               {
                 icon: '🏆',
-                title: cmsContent[CMSKeys.HOME_VALUE_PROP_1_TITLE] || '自主生产',
-                description: cmsContent[CMSKeys.HOME_VALUE_PROP_1_DESC] || '西南唯一台球设备制造商，从源头保证品质',
+                title: cmsContent[CMSKeys.HOME_VALUE_PROP_1_TITLE] || '20年匠心工艺',
+                description: cmsContent[CMSKeys.HOME_VALUE_PROP_1_DESC] || '西南唯一台球设备制造商',
               },
               {
                 icon: '🎯',
-                title: cmsContent[CMSKeys.HOME_VALUE_PROP_2_TITLE] || '专业培训',
+                title: cmsContent[CMSKeys.HOME_VALUE_PROP_2_TITLE] || '专业培训体系',
                 description: cmsContent[CMSKeys.HOME_VALUE_PROP_2_DESC] || '专业教练团队，科学训练体系',
               },
               {
                 icon: '🌟',
-                title: cmsContent[CMSKeys.HOME_VALUE_PROP_3_TITLE] || '全程服务',
-                description: cmsContent[CMSKeys.HOME_VALUE_PROP_3_DESC] || '从设备到运营，提供一站式解决方案',
+                title: cmsContent[CMSKeys.HOME_VALUE_PROP_3_TITLE] || '一站式服务',
+                description: cmsContent[CMSKeys.HOME_VALUE_PROP_3_DESC] || '从设备到运营，全程支持',
               },
             ].map((item, index) => (
               <motion.div
@@ -217,11 +204,11 @@ export const HomePage: React.FC = () => {
                 variants={itemVariants}
                 className="text-center group"
               >
-                <div className="w-20 h-20 mx-auto mb-6 bg-primary-100 rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 transition-transform duration-300">
+                <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-primary-100 to-primary-200 rounded-3xl flex items-center justify-center text-5xl group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 shadow-lg">
                   {item.icon}
                 </div>
-                <h3 className="text-2xl font-semibold mb-3">{item.title}</h3>
-                <p className="text-neutral-600 leading-relaxed">{item.description}</p>
+                <h3 className="text-2xl font-bold mb-4 text-neutral-800">{item.title}</h3>
+                <p className="text-lg text-neutral-600 leading-relaxed px-4">{item.description}</p>
               </motion.div>
             ))}
           </Grid>
