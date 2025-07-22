@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../atoms/Button';
 import { useContextEngine } from '../../context/ContextEngine';
+import { realStores, getDistricts, getStoresByDistrict } from '../../data/realStoreData';
 
 interface Message {
   id: string;
@@ -50,8 +51,29 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ className = '' }) => {
     let replyText = '';
     let quickReplies: string[] = [];
     
+    // 获取所有区域名称
+    const districts = getDistricts();
+    
+    // 检查是否输入了区域名称
+    const matchedDistrict = districts.find(district => userMessage.includes(district));
+    
+    if (matchedDistrict) {
+      // 如果匹配到区域，显示该区域的所有门店
+      const districtStores = getStoresByDistrict(matchedDistrict);
+      replyText = `${matchedDistrict}共有${districtStores.length}家门店：\n\n`;
+      
+      districtStores.forEach((store, index) => {
+        replyText += `${index + 1}. ${store.name}\n`;
+        replyText += `   地址：${store.address}\n`;
+        replyText += `   电话：${store.phone}\n`;
+        replyText += `   营业时间：${store.businessHours}\n`;
+        if (index < districtStores.length - 1) replyText += '\n';
+      });
+      
+      quickReplies = ['查看其他区域', '预约场地', '导航到最近门店'];
+    }
     // 关键词匹配
-    if (lowerMessage.includes('门店') || lowerMessage.includes('地址')) {
+    else if (lowerMessage.includes('门店') || lowerMessage.includes('地址')) {
       replyText = '我们在昆明有20多家连锁门店，您想查看哪个区域的门店呢？\n\n我们的主要门店分布在：\n• 呈贡区：6家门店\n• 五华区：6家门店\n• 官渡区：2家门店\n• 盘龙区：2家门店\n• 晋宁区：3家门店';
       quickReplies = ['呈贡区', '五华区', '官渡区', '盘龙区', '查看所有门店'];
     } else if (lowerMessage.includes('预约') || lowerMessage.includes('订场')) {
@@ -81,6 +103,9 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ className = '' }) => {
     } else if (lowerMessage.includes('优惠') || lowerMessage.includes('活动')) {
       replyText = '当前优惠活动：\n• 新会员首次体验免费\n• 团体预订8折优惠\n• 学生凭证件7折\n• 生日当天免费打球\n\n更多优惠请咨询门店';
       quickReplies = ['领取优惠券', '会员优惠', '门店活动'];
+    } else if (userMessage === '查看门店' || userMessage === '查看其他区域') {
+      replyText = '请选择您想查看的区域：\n\n• 呈贡区：6家门店\n• 五华区：6家门店\n• 官渡区：2家门店\n• 盘龙区：2家门店\n• 晋宁区：3家门店\n• 澄江市：1家门店\n\n您可以直接输入区域名称查看详细信息';
+      quickReplies = ['呈贡区', '五华区', '官渡区', '盘龙区', '晋宁区', '澄江市'];
     } else {
       replyText = '抱歉，我可能没有完全理解您的问题。您可以试试以下选项，或者直接致电我们的客服热线：4000089147';
       quickReplies = ['转人工客服', '查看常见问题', '留下联系方式'];
