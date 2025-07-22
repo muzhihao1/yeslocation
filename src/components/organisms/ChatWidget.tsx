@@ -66,7 +66,6 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ className = '' }) => {
         replyText += `${index + 1}. ${store.name}\n`;
         replyText += `   地址：${store.address}\n`;
         replyText += `   电话：${store.phone}\n`;
-        replyText += `   营业时间：${store.businessHours}\n`;
         if (index < districtStores.length - 1) replyText += '\n';
       });
       
